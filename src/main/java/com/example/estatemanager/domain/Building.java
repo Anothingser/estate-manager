@@ -9,13 +9,15 @@ import java.io.Serializable;
 @Table(name="building")
 public class Building extends BaseDomain implements Serializable {
 
-    private int communityId;
+    private Integer communityId;
 
     private String communityName;
 
     private String name;
 
-    private int householdsNum;
+    private Integer householdsNum;
 
     private String description;
+
+    private Integer danger;
 }

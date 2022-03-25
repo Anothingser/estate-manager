@@ -4,7 +4,7 @@ import lombok.Data;
 
 import javax.persistence.Id;
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * 此类为基类
@@ -14,9 +14,9 @@ import java.sql.Date;
 public class BaseDomain implements Serializable {
 
     @Id
-    private int id;
+    private Integer id;
 
-    private Date CreateTime;
+    private Date createTime;
 
-    private Date UpdateTime;
+    private Date updateTime;
 }

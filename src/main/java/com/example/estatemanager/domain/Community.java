@@ -17,105 +17,17 @@ public class Community extends BaseDomain implements Serializable {
 
     private String code;
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public double getArea() {
-        return area;
-    }
-
-    public void setArea(double area) {
-        this.area = area;
-    }
-
-    public int getBuildingNum() {
-        return buildingNum;
-    }
-
-    public void setBuildingNum(int buildingNum) {
-        this.buildingNum = buildingNum;
-    }
-
-    public int getHouseholdsNum() {
-        return householdsNum;
-    }
-
-    public void setHouseholdsNum(int householdsNum) {
-        this.householdsNum = householdsNum;
-    }
-
-    public int getGreenRate() {
-        return greenRate;
-    }
-
-    public void setGreenRate(int greenRate) {
-        this.greenRate = greenRate;
-    }
-
-    public String getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
-    }
-
-    public String getDeveloper() {
-        return developer;
-    }
-
-    public void setDeveloper(String developer) {
-        this.developer = developer;
-    }
-
-    public String getEstateCompany() {
-        return estateCompany;
-    }
-
-    public void setEstateCompany(String estateCompany) {
-        this.estateCompany = estateCompany;
-    }
-
-    public char getStatus() {
-        return status;
-    }
-
-    public void setStatus(char status) {
-        this.status = status;
-    }
-
     private String name;
 
     private String address;
 
-    private double area;
+    private Double area;
 
-    private int buildingNum;
+    private Integer buildingNum;
 
-    private int householdsNum;
+    private Integer householdsNum;
 
-    private int greenRate;
+    private Integer greenRate;
 
     private String thumbnail;
 
@@ -123,5 +35,5 @@ public class Community extends BaseDomain implements Serializable {
 
     private String estateCompany;
 
-    private char status;
+    private String status;
 }

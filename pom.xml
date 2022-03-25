@@ -27,7 +27,7 @@
         <!--Mybaties-->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot</artifactId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>2.1.4</version>
         </dependency>
 
@@ -165,6 +165,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.1.14.RELEASE</version>
             </plugin>
         </plugins>
     </build>

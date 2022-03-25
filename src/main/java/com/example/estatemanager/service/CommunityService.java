@@ -11,4 +11,14 @@ public interface CommunityService {
     public List<Community> communityTable();
 
     public Page<Community> SearchList(Map searchMap);
+
+    boolean AddCommunity(Community community);
+
+    public Community FindById(Integer id);
+
+    boolean UpdateCommunity(Community community);
+
+    Boolean UpdateStatus(Integer status, Integer id);
+
+    Boolean DeleteCommunity(List<Integer> ids);
 }
