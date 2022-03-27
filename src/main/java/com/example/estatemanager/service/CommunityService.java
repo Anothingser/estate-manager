@@ -3,6 +3,7 @@ package com.example.estatemanager.service;
 import com.example.estatemanager.domain.Community;
 import com.github.pagehelper.Page;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,4 +22,6 @@ public interface CommunityService {
     Boolean UpdateStatus(Integer status, Integer id);
 
     Boolean DeleteCommunity(List<Integer> ids);
+
+    ArrayList GetCommunities();
 }

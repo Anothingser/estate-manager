@@ -34,7 +34,6 @@ public class BuildingServiceImpl implements BuildingService {
     @Transactional
     public int AddBuilding(Building building) {
         try{
-            buildingMapper.insert(building);
             Community community=communityMapper.selectByPrimaryKey(building.getCommunityId());
             community.setBuildingNum(community.getBuildingNum()+1);//小区栋数+1
             Date date=new Date();
@@ -84,7 +83,9 @@ public class BuildingServiceImpl implements BuildingService {
             //名称模糊查询
             if (StringUtil.isNotEmpty((String) searchMap.get("name"))) {
                 criteria.andLike("name", (String) "%" + (String) searchMap.get("name") + "%");
-                criteria.andLike("communityName", (String) "%" + (String) searchMap.get("name") + "%");
+            }
+            if(StringUtil.isNotEmpty((String) searchMap.get("communityName"))){
+                criteria.andLike("communityName", (String) "%" + (String) searchMap.get("communityName") + "%");
             }
             //分页内容
 //            if(StringUtil.isNotEmpty((String) searchMap.get("pageNum"))){
@@ -111,6 +112,11 @@ public class BuildingServiceImpl implements BuildingService {
         }catch (Exception e){
             return false;
         }
+    }
+
+    @Override
+    public Building FindById(Integer id) {
+        return buildingMapper.selectByPrimaryKey(id);
     }
 
 }

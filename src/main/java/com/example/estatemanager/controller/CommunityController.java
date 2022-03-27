@@ -1,6 +1,7 @@
 package com.example.estatemanager.controller;
 
 
+import com.alibaba.fastjson.JSON;
 import com.example.estatemanager.common.MessageConstant;
 import com.example.estatemanager.common.PageResult;
 import com.example.estatemanager.common.Result;
@@ -10,6 +11,9 @@ import com.example.estatemanager.service.CommunityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.github.pagehelper.Page;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -71,5 +75,12 @@ public class CommunityController {
     public Result DeleteCommunity(@RequestBody List<Integer> ids){
         Boolean flag=communityService.DeleteCommunity(ids);
         return new Result(true,StatusCode.OK,MessageConstant.COMMUNITY_DELETE_SUCCESS);
+    }
+
+    @RequestMapping ("/GetCommunities")
+    public Result GetCommunities(){
+        ArrayList communities=communityService.GetCommunities();
+        ArrayList list=new ArrayList();
+        return new Result();
     }
 }

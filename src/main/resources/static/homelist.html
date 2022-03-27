@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="css/main.css" media="all">
     <script type="text/javascript" src="lib/loading/okLoading.js"></script>
     <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="/css/index.css">
 </head>
 <body>
 <div class="x-nav">
@@ -25,17 +26,20 @@
             </span>
     <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"  href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon" style="line-height:30px">ဂ</i></a>
 </div>
-<div class="x-body">
+<div class="x-body" id="app">
     <form class="layui-form x-center" action="" style="width:800px">
         <div class="layui-form-pane" style="margin-top: 15px;">
             <div class="layui-form-item">
-                <label class="layui-form-label">日期范围</label>
-                <div class="layui-input-inline">
-                    <input class="layui-input" placeholder="开始日" id="LAY_demorange_s">
-                </div>
-                <div class="layui-input-inline">
-                    <input class="layui-input" placeholder="截止日" id="LAY_demorange_e">
-                </div>
+                <span class="demonstration">时间范围</span>
+                <el-date-picker
+                        @change="dateChange"
+                        v-model="selectDate"
+                        type="daterange"
+                        range-separator="-"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期"
+                        :picker-options="pickerOptions">
+                </el-date-picker>
                 <div class="layui-input-inline">
                     <input type="text" name="username"  placeholder="标题" autocomplete="off" class="layui-input">
                 </div>
@@ -46,10 +50,10 @@
         </div>
     </form>
     <xblock>
-        <button class="layui-btn layui-btn-danger" onclick="delAll()">
+        <button class="layui-btn layui-btn-danger" @click="del_ser()">
             <i class="layui-icon">&#xe640;</i>批量删除
         </button>
-        <button class="layui-btn" onclick="home_add('添加','homeadd.html','1000','600')">
+        <button class="layui-btn" @click="home_add('添加','homeadd.html','1000','600')">
             <i class="layui-icon">&#xe608;</i>添加
         </button>
         <span class="x-right" style="line-height:40px">共有数据：88 条</span>

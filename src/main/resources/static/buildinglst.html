@@ -38,17 +38,19 @@
                             end-placeholder="结束日期"
                             align="right">
                     </el-date-picker>
-                <el-input v-model="searchMap.name" placeholder="请输入查询关键字" style="width: 20%"/>
-                <el-button type="primary" plain @click="searchMap.pageNum=1;search()">查询信息</el-button>
+                        <el-select v-model="searchMap.communityName" placeholder="请选择">
+                            <el-option
+                                    v-for="item in communities"
+                                    :key="item.id"
+                                    :value="item.name">
+                            </el-option>
+                        </el-select>
+                    <el-input v-model="searchMap.name" placeholder="请输入查询关键字" style="width: 20%"></el-input>
+                    <el-button type="primary" plain @click="searchMap.pageNum=1;search()" >查询信息</el-button>
                 </div>
     <xblock>
-        <button class="layui-btn layui-btn-danger" >
-            <i class="layui-icon">&#xe640;</i>批量删除
-        </button>
-        <button class="layui-btn" onclick="building_add('添加栋数','buildingadd.html','1000','600')">
-            <i class="layui-icon">&#xe608;</i>添加
-        </button>
-        <span class="x-right" style="line-height:40px">共有数据：<span class="layui-badge">2</span> 条</span>
+        <button class="layui-btn layui-btn-danger" @click="del_ser()"><i class="layui-icon">&#xe640;</i>批量删除</button>
+        <button class="layui-btn" @click="admin_add('添加','buildingadd.html','1000','600')"><i class="layui-icon">&#xe608;</i>添加</button>
     </xblock>
     <table class="layui-table">
         <thead>
@@ -92,14 +94,17 @@
             <td>{{building.name}}</td>
             <td>{{building.householdsNum}}</td>
             <td>{{building.description}}</td>
-            <td>{{dateFormat(building.createTime)}}}</td>
-            <td>{{building.danger==0?'安全':'封控'}}</td>
+            <td>{{dateFormat(building.createTime)}}</td>
+            <td>
+                <span :class="building.danger==0?'layui-btn layui-btn-normal':building.danger==1?'layui-btn layui-btn-warm':'layui-btn layui-btn-danger'">
+                    {{building.danger==0?'安全':building.danger==1?'管控':'封控'}}
+                </span></td>
             <td class="td-manage">
-                <a title="编辑" href="javascript:;" onclick="building_edit('编辑','buildingadd.html','2','1000','600')"
+                <a title="编辑" href="javascript:;" @click="building_edit('编辑','buildingadd.html',building.id,'1000','600')"
                    class="ml-5" style="text-decoration:none">
                     <i class="layui-icon">&#xe642;</i>
                 </a>
-                <a title="删除" href="javascript:;" onclick="building_del(this,'2')"
+                <a title="删除" href="javascript:;" @click="del_single(building.id)"
                    style="text-decoration:none">
                     <i class="layui-icon">&#xe640;</i>
                 </a>
@@ -131,12 +136,14 @@
         el:"#app",
         data:{
             checkIds:[],
+            communities:[],
             buildingList:[],
             total:1,
             searchMap:{
                 "startTime":"",
                 "endTime":"",
                 "name":"",
+                "communityName":"",
                 "pageNum":1,
                 "pageSize":5,
             },
@@ -168,6 +175,61 @@
             },
         },
         methods:{
+            /*添加*/
+            admin_add(title,url,w,h){
+                x_admin_show(title,url,w,h);
+            },
+            /*单个删除*/
+            del_single(id){
+                this.$confirm('危险操作！确认要删除该楼栋的所有信息吗？','提示',{
+                    confirmButtonText:"确定",
+                    cancelButtonText:"取消",
+                    type:'warning'
+                }).then(()=>{
+                    this.checkIds.push(id);
+                    axios.post("/backend/building/DeleteBuilding",this.checkIds).then((res)=>{
+                        if(res.data.flag){
+                            this.$message({
+                                type:'success',
+                                message:'删除操作已被执行'
+                            });
+                        }
+                        this.checkIds=[];
+                        this.searchMap.pageNum=1;
+                        this.search();
+                    });
+                }).catch(()=>{
+                    this.$message({
+                        type:'info',
+                        message: '已取消操作'
+                    });
+                });
+            },
+            /*多个删除*/
+            del_ser(){
+                this.$confirm('危险操作！确认要删除吗该小区的所有信息吗？','提示',{
+                    confirmButtonText:"确定",
+                    cancelButtonText:"取消",
+                    type:'warning'
+                }).then(()=>{
+                    axios.post("/backend/building/DeleteBuilding",this.checkIds).then((res)=>{
+                        if(res.data.flag){
+                            this.$message({
+                                type:'success',
+                                message:'删除操作已被执行'
+                            });
+                        }
+                        this.checkIds=[];
+                        this.searchMap.pageNum=1;
+                        this.search();
+                    });
+                }).catch(()=>{
+                    this.$message({
+                        type:'info',
+                        message: '已取消操作'
+                    });
+                });
+            },
             /*分页方法*/
             handleSizeChange(pageSize){
                 this.searchMap.pageSize=pageSize;
@@ -206,6 +268,17 @@
                     app.total=res.data.total;
                 })
             },
+            //获取小区列表
+            getcommunities(){
+                axios.get("backend/community/CommunityList").then((res)=>{
+                    app.communities=res.data;
+                })
+            },
+            //编辑
+            building_edit(title,url,id,w,h) {
+                url = url+"?id="+id;
+                x_admin_show(title,url,w,h);
+            },
         },
         created:function () {
             layui.use(['laydate','element','laypage','layer'], function(){
@@ -230,6 +303,7 @@
                 });
             });
             this.search();
+            this.getcommunities();
         },
     })
 

@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.util.StringUtil;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -107,5 +109,17 @@ public class CommunityServiceImpl implements CommunityService {
             communityMapper.deleteByPrimaryKey(i);
         }
         return true;
+    }
+
+    @Override
+    public ArrayList GetCommunities() {
+        ArrayList communities= new ArrayList();
+        List<Community> cms= communityMapper.selectAll();
+        int i=1;
+        for(Community cm :cms){
+            communities.add(cm.getName());
+            i++;
+        }
+        return communities;
     }
 }

@@ -60,4 +60,10 @@ public class BuildingController {
         else
             return new Result(false, StatusCode.ERROR, MessageConstant.SYSTEM_BUSY);
     }
+
+    @RequestMapping("/FindById")
+    public Result FindById(Integer id){
+        return new Result(true,StatusCode.OK,
+                MessageConstant.COMMUNITY_FIND_BY_ID_SUCCESS,buildingService.FindById(id));
+    }
 }

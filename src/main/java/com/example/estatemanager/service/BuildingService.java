@@ -17,4 +17,6 @@ public interface BuildingService {
     Page<Building> SearchList(Map searchMap);
 
     boolean UpdateBuilding(Building building);
+
+    Building FindById(Integer id);
 }
