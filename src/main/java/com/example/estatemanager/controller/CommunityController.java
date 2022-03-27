@@ -77,7 +77,7 @@ public class CommunityController {
         return new Result(true,StatusCode.OK,MessageConstant.COMMUNITY_DELETE_SUCCESS);
     }
 
-    @RequestMapping ("/GetCommunities")
+    @RequestMapping ("/GetCommunities") //此方法没用
     public Result GetCommunities(){
         ArrayList communities=communityService.GetCommunities();
         ArrayList list=new ArrayList();

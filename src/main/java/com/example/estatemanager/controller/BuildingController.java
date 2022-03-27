@@ -27,8 +27,8 @@ public class BuildingController {
     public BuildingService buildingService;
 
     @RequestMapping("GetBuildingList")
-    public List<Building> GetBuildingList(){
-        return buildingService.GetBuildingList();
+    public List<Building> GetBuildingList(@RequestBody Map searchMap){
+        return buildingService.GetBuildingList(searchMap);
     }
 
     @RequestMapping("/SearchList")
@@ -66,4 +66,5 @@ public class BuildingController {
         return new Result(true,StatusCode.OK,
                 MessageConstant.COMMUNITY_FIND_BY_ID_SUCCESS,buildingService.FindById(id));
     }
+
 }

@@ -26,8 +26,20 @@ public class BuildingServiceImpl implements BuildingService {
     CommunityMapper communityMapper;
 
     @Override
-    public List<Building> GetBuildingList() {
-        return buildingMapper.selectAll();
+    public List<Building> GetBuildingList(Map searchMap) {
+        //if (searchMap.get("buildingName")!=null ) {
+        Example example = new Example(Building.class);
+        Example.Criteria criteria = example.createCriteria();
+        if(searchMap!=null && StringUtil.isNotEmpty((String) searchMap.get("communityName")))
+        {criteria.equals(searchMap.get("communityName"));
+        //return buildingMapper.selectByExample(example);
+        Building building=new Building();
+        building.setCommunityName(searchMap.get("communityName").toString());
+        return buildingMapper.select(building);}
+
+        else{return buildingMapper.selectAll();}
+    //}
+        //else{return buildingMapper.selectAll();}
     }
 
     @Override

@@ -27,7 +27,7 @@
     <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"  href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon" style="line-height:30px">ဂ</i></a>
 </div>
 <div class="x-body" id="app">
-    <form class="layui-form x-center" action="" style="width:800px">
+    <form class="layui-form x-center" action="" style="width:1200px">
         <div class="layui-form-pane" style="margin-top: 15px;">
             <div class="layui-form-item">
                 <span class="demonstration">时间范围</span>
@@ -36,16 +36,26 @@
                         v-model="selectDate"
                         type="daterange"
                         range-separator="-"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期"
+                        start-placeholder="入住日期（Begin）"
+                        end-placeholder="结束日期（Last）"
                         :picker-options="pickerOptions">
                 </el-date-picker>
-                <div class="layui-input-inline">
-                    <input type="text" name="username"  placeholder="标题" autocomplete="off" class="layui-input">
-                </div>
-                <div class="layui-input-inline" style="width:80px">
-                    <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
-                </div>
+                <el-select v-model="searchMap.communityName" placeholder="按小区进行筛选" @change="setboptions" >
+                    <el-option
+                            v-for="item in communities"
+                            :key="item.id"
+                            :value="item.name">
+                    </el-option>
+                </el-select>
+                <el-select v-model="searchMap.buildingName" placeholder="请选择">
+                    <el-option
+                            v-for="item in buildings"
+                            :key="item.id"
+                            :value="item.name">
+                    </el-option>
+                </el-select>
+                <el-input v-model="searchMap.name" placeholder="按户主搜索" style="width: 20%" ></el-input>
+                <el-button type="primary" plain @click="searchMap.pageNum=1;search()">查询</el-button>
             </div>
         </div>
     </form>
@@ -53,16 +63,15 @@
         <button class="layui-btn layui-btn-danger" @click="del_ser()">
             <i class="layui-icon">&#xe640;</i>批量删除
         </button>
-        <button class="layui-btn" @click="home_add('添加','homeadd.html','1000','600')">
+        <button class="layui-btn" @click="house_add('添加','homeadd.html','1000','600')">
             <i class="layui-icon">&#xe608;</i>添加
         </button>
-        <span class="x-right" style="line-height:40px">共有数据：88 条</span>
     </xblock>
     <table class="layui-table">
         <thead>
         <tr>
             <th>
-                <input type="checkbox" name="" value="" id="onclicks">
+                <input type="checkbox" >
             </th>
             <th>
                 ID
@@ -101,129 +110,42 @@
                 入住时间
             </th>
             <th>
+                防疫状态
+            </th>
+            <th>
                 操作
             </th>
         </tr>
         </thead>
-        <tbody id="ches">
-        <tr>
+        <tbody>
+        <tr v-for="(house,index) in houseList">
             <td>
-                <input type="checkbox" value="3" name="" id="che">
+                <input type="checkbox" :id="'id'+house.id" :value="house.id" v-model="checkIds">
             </td>
+            <td>{{house.id}}</td>
             <td>
-                3                        </td>
-            <td>
-                <u style="cursor:pointer" onclick="question_show()">
-                    金华万府                            </u>
+                {{house.communityName}}
+<!--                <u style="cursor:pointer" onclick="question_show()"></u>-->
             </td>
-            <td >
-                A栋                        </td>
-            <td >
-                HM20191213002                        </td>
-            <td >
-                金华小区A栋                        </td>
-            <td >
-                admin                        </td>
-            <td >
-                1111111111                        </td>
-            <td >
-                4                        </td>
-            <td >
-                3                        </td>
-            <td >
-                22                        </td>
-            <td >
-                金华小区欢迎您                        </td>
-            <td >
-                2019-12-13                        </td>
+            <td>{{house.buildingName}}</td>
+            <td>{{house.code}}</td>
+            <td>{{house.name}}</td>
+            <td>{{house.ownerName}}</td>
+            <td>{{house.telephone}}</td>
+            <td>{{house.roomNum}}</td>
+            <td>{{house.unit}}</td>
+            <td>{{house.floor}}</td>
+            <td>{{house.description}}</td>
+            <td>{{house.liveTime}}</td>
+            <td><span :class="house.danger==0?'layui-btn layui-btn-normal':house.danger==1?'layui-btn layui-btn-warm':'layui-btn layui-btn-danger'">
+                    {{house.danger==0?'安全':house.danger==1?'观察':'隔离'}}
+                </span></td>
             <td class="td-manage">
-                <a title="编辑" href="javascript:;" onclick="home_edit('编辑','homeadd.html','3','1000','600')"
+                <a title="编辑" href="javascript:;" @click="house_edit('编辑','homeadd.html',house.id,'1000','600')"
                    class="ml-5" style="text-decoration:none">
                     <i class="layui-icon">&#xe642;</i>
                 </a>
-                <a title="删除" href="javascript:;" onclick="question_del(this,'1')"
-                   style="text-decoration:none">
-                    <i class="layui-icon">&#xe640;</i>
-                </a>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <input type="checkbox" value="2" name="" id="che">
-            </td>
-            <td>
-                2                        </td>
-            <td>
-                <u style="cursor:pointer" onclick="question_show()">
-                    金华万府                            </u>
-            </td>
-            <td >
-                A栋                        </td>
-            <td >
-                HM20191213001                        </td>
-            <td >
-                金华小区                        </td>
-            <td >
-                陈思语                        </td>
-            <td >
-                111111111111                        </td>
-            <td >
-                4                        </td>
-            <td >
-                3                        </td>
-            <td >
-                22                        </td>
-            <td >
-                金华小区                        </td>
-            <td >
-                2019-12-13                        </td>
-            <td class="td-manage">
-                <a title="编辑" href="javascript:;" onclick="home_edit('编辑','homeadd.html','2','1000','600')"
-                   class="ml-5" style="text-decoration:none">
-                    <i class="layui-icon">&#xe642;</i>
-                </a>
-                <a title="删除" href="javascript:;" onclick="question_del(this,'1')"
-                   style="text-decoration:none">
-                    <i class="layui-icon">&#xe640;</i>
-                </a>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <input type="checkbox" value="1" name="" id="che">
-            </td>
-            <td>
-                1                        </td>
-            <td>
-                <u style="cursor:pointer" onclick="question_show()">
-                    东湖小区                            </u>
-            </td>
-            <td >
-                东湖小区别墅                        </td>
-            <td >
-                HM20191213000                        </td>
-            <td >
-                东湖房地产                        </td>
-            <td >
-                admin                        </td>
-            <td >
-                1111111111                        </td>
-            <td >
-                4                        </td>
-            <td >
-                4                        </td>
-            <td >
-                20                        </td>
-            <td >
-                船袜                        </td>
-            <td >
-                2019-12-13                        </td>
-            <td class="td-manage">
-                <a title="编辑" href="javascript:;" onclick="home_edit('编辑','homeadd.html','1','1000','600')"
-                   class="ml-5" style="text-decoration:none">
-                    <i class="layui-icon">&#xe642;</i>
-                </a>
-                <a title="删除" href="javascript:;" onclick="question_del(this,'1')"
+                <a title="删除" href="javascript:;" @click="del_single(house.id)"
                    style="text-decoration:none">
                     <i class="layui-icon">&#xe640;</i>
                 </a>
@@ -231,127 +153,200 @@
         </tr>
         </tbody>
     </table>
-
-    <div id="page"></div>
+     <span class="x-right" style="line-height:40px">共有数据：<span class="layui-badge">{{total}}</span> 条</span>
+    <!--分页部分-->
+    <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            background
+            :page-size="searchMap.pageSize"
+            layout="prev, pager, next,sizes"
+            :page-sizes="[2,5,10]"
+            style="text-align:center;"
+            :total="total">
+    </el-pagination>
 </div>
 <script src="lib/layui/layui.js" charset="utf-8"></script>
 <script src="js/x-layui.js" charset="utf-8"></script>
+<script src="/js/vue.js" charset="utf-8"></script>
+<script src="/js/index.js" charset="utf-8"></script>
+<script src="/js/axios.js" charset="utf-8"></script>
+<script src="/js/moment.min.js" charset="utf-8"></script>
 <script>
-    layui.use(['laydate','element','laypage','layer'], function(){
-        $ = layui.jquery;//jquery
-        laydate = layui.laydate;//日期插件
-        lement = layui.element();//面包导航
-        laypage = layui.laypage;//分页
-        layer = layui.layer;//弹出层
-        okLoading.close($);
-        //以上模块根据需要引入
-
-
-        var start = {
-            min: laydate.now()
-            ,max: '2099-06-16 23:59:59'
-            ,istoday: false
-            ,choose: function(datas){
-                end.min = datas; //开始日选好后，重置结束日的最小日期
-                end.start = datas //将结束日的初始值设定为开始日
-            }
-        };
-
-        var end = {
-            min: laydate.now()
-            ,max: '2099-06-16 23:59:59'
-            ,istoday: false
-            ,choose: function(datas){
-                start.max = datas; //结束日选好后，重置开始日的最大日期
-            }
-        };
-
-        document.getElementById('LAY_demorange_s').onclick = function(){
-            start.elem = this;
-            laydate(start);
+    var app=new Vue({
+        el: "#app",
+        data: {
+            checkIds: [],
+            houseList: [],
+            communities: [],
+            buildings: [],
+            total: 1,
+            searchMap: {
+                "startTime": "",
+                "endTime": "",
+                "name": "",
+                "communityName": "",
+                "buildingName": "",
+                "pageNum": 1,
+                "pageSize": 5
+            },
+            selectDate: ['', ''],
+            pickerOptions: {
+                disabledDate(time) {
+                    return time.getTime() > Date.now();
+                },
+                shortcuts: [{
+                    text: '今天',
+                    onClick(picker) {
+                        picker.$emit('pick', new Date());
+                    }
+                }, {
+                    text: '昨天',
+                    onClick(picker) {
+                        const date = new Date();
+                        date.setTime(date.getTime() - 3600 * 1000 * 24);
+                        picker.$emit('pick', date);
+                    }
+                }, {
+                    text: '一周前',
+                    onClick(picker) {
+                        const date = new Date();
+                        date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+                        picker.$emit('pick', date);
+                    }
+                }]
+            },
+        },
+        methods: {
+            /*单个删除*/
+            del_single(id){
+                this.$confirm('危险操作！确认要删除该楼栋的所有信息吗？','提示',{
+                    confirmButtonText:"确定",
+                    cancelButtonText:"取消",
+                    type:'warning'
+                }).then(()=>{
+                    this.checkIds.push(id);
+                    axios.post("/backend/house/DeleteHouse",this.checkIds).then((res)=>{
+                        if(res.data.flag){
+                            this.$message({
+                                type:'success',
+                                message:'删除操作已被执行'
+                            });
+                        }
+                        this.checkIds=[];
+                        this.searchMap.pageNum=1;
+                        this.search();
+                    });
+                }).catch(()=>{
+                    this.$message({
+                        type:'info',
+                        message: '已取消操作'
+                    });
+                });
+            },
+            /*多个删除*/
+            del_ser(){
+                this.$confirm('危险操作！确认要删除吗该房屋的所有信息吗？','提示',{
+                    confirmButtonText:"确定",
+                    cancelButtonText:"取消",
+                    type:'warning'
+                }).then(()=>{
+                    axios.post("/backend/house/DeleteHouse",this.checkIds).then((res)=>{
+                        if(res.data.flag){
+                            this.$message({
+                                type:'success',
+                                message:'删除操作已被执行'
+                            });
+                        }
+                        this.checkIds=[];
+                        this.searchMap.pageNum=1;
+                        this.search();
+                    });
+                }).catch(()=>{
+                    this.$message({
+                        type:'info',
+                        message: '已取消操作'
+                    });
+                });
+            },
+            /*分页方法*/
+            handleSizeChange(pageSize) {
+                this.searchMap.pageSize = pageSize;
+                this.search()
+            },
+            /*页码方法*/
+            handleCurrentChange(pageNum) {
+                this.searchMap.pageNum = pageNum;
+                this.search()
+            },
+            /*为时间区间添加区间*/
+            dateChange() {
+                if (this.selectDate == null || this.selectDate.length == 0) {
+                    this.searchMap.startTime = '';
+                    this.searchMap.endTime = '';
+                } else {
+                    if (this.selectDate[0] != null && this.selectDate[0] != "") {
+                        this.searchMap.startTime = this.dateFormat(this.selectDate[0]);
+                    }
+                    if (this.selectDate[1] != null && this.selectDate[1] != "") {
+                        this.searchMap.endTime = this.dateFormat(this.selectDate[1]);
+                    }
+                }
+            },
+            /*日期格式化方法*/
+            dateFormat(date, format) {
+                if (format == null || format == '') {
+                    format = "YYYY-MM-DD HH:mm:ss"
+                }
+                return moment(date).format(format);
+            },
+            /*分页查询*/
+            search() {
+                axios.post("backend/house/SearchList", this.searchMap).then((res) => {
+                    app.houseList = res.data.data;
+                    app.total = res.data.total;
+                })
+            },
+            /*获取小区列表*/
+            getcommunities() {
+                axios.get("backend/community/CommunityList").then((res) => {
+                    app.communities = res.data;
+                })
+            },
+            /*获取楼栋列表*/
+            getbuildings(){
+                axios.post("backend/building/GetBuildingList",this.searchMap).then((res)=>{
+                    app.buildings=res.data;
+                })
+            },
+            /*设置楼栋下拉*/
+            setboptions(){
+                this.getbuildings();
+            },
+            /*编辑按钮*/
+            house_edit(title,url,id,w,h) {
+                url = url+"?id="+id;
+                x_admin_show(title,url,w,h);
+            },
+            /*添加*/
+            house_add(title,url,w,h){
+                x_admin_show(title,url,w,h);
+            },
+        },
+        created: function () {
+            layui.use(['laydate', 'element', 'laypage', 'layer'], function () {
+                $ = layui.jquery;//jquery
+                layer = layui.layer;//弹出层
+                okLoading.close($);
+            });
+            this.search();
+            this.getcommunities();
+            this.getbuildings();
         }
-        document.getElementById('LAY_demorange_e').onclick = function(){
-            end.elem = this
-            laydate(end);
-        }
-    });
-
-    //批量删除提交
-    function delAll () {
-        layer.confirm('确认要删除吗？',function(index){
-            //捉到所有被选中的，发异步进行删除
-            layer.msg('删除成功', {icon: 1});
-        });
-    }
-
-    function question_show (argument) {
-        layer.msg('可以跳到前台具体问题页面',{icon:1,time:1000});
-    }
-    /*添加*/
-    function home_add(title,url,w,h){
-        x_admin_show(title,url,w,h);
-    }
-    //编辑
-    function home_edit (title,url,id,w,h) {
-        url = url+"?id="+id;
-        x_admin_show(title,url,w,h);
-    }
-
-    /*删除*/
-    function question_del(obj,id){
-        layer.confirm('确认要删除吗？',function(index){
-            //发异步删除数据
-            $(obj).parents("tr").remove();
-            layer.msg('已删除!',{icon:1,time:1000});
-        });
-    }
+    })
 
 
 
 </script>
-
-<script>
-    var add=document.getElementById('ches');
-    var inputs=add.getElementsByTagName('input');
-
-    /*$("allSelect").onclick = function () {
-        for(var i=0; i<inputs.length; i++){
-            inputs[i].checked = true;
-        }
-    };*/
-    var che=document.getElementById("onclicks");
-    che.addEventListener('click',function () {
-        for(var i=0; i<inputs.length;i++){
-            inputs[i].checked=this.checked;
-            //console.log(inputs[i].value);
-        }
-        //return vel;
-
-    });
-
-    // 注册事件
-    /* che.onclick = function(){
-         // this.checked  可以得到当前复选框的选中状态，如果是 true 就是选中，如果是 false 就是未选中
-         for(var i=0; i< inputs.length; i++){
-             inputs[i].checked = this.checked;
-         }
-     }*/
-    // 2、下面的复选框要全部选中，上面的全选按钮才能够全部选中，给下面的所有复选框绑定事件，每次点击，都要循环查看下面下面所有的复选框是否有没选中的，如果有没选中的复选框，那么上面的全选按钮就不选中。
-    /*for(var i = 0; i<inputs.length; i++){
-        inputs[i].onclick = function(){
-             // 设置一个变量来控制按钮是否全部选中
-             var flag = true;
-             // 每次点击下面的复选框都要检查下面的四个小按钮是否被全部选中。
-             /!*for(var i =0; i<inputs.length; i++){
-                  if(!inputs[i].checked){
-                      flag = false;
-                  }
-             }*!/
-             che.checked = flag;
-        }
-    }*/
-
-</script>
-
 </body>
 </html>

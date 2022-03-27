@@ -16,7 +16,7 @@ public class House extends BaseDomain implements Serializable {
 
     private Integer buildingId;
 
-    private String buildiingName;
+    private String buildingName;
 
     private String code;
 
@@ -26,7 +26,7 @@ public class House extends BaseDomain implements Serializable {
 
     private String ownerName;
 
-    private Integer telephone;
+    private String telephone;
 
     private Integer roomNum;
 

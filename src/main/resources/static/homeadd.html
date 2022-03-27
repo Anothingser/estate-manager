@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,247 +12,225 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" href="css/main.css" media="all">
+    <link rel="stylesheet" href="/css/index.css">
     <script type="text/javascript" src="lib/loading/okLoading.js"></script>
 
     <style>
-        .imgs{display: none;}
+        .imgs {
+            display: none;
+        }
     </style>
 </head>
 <body>
-<div class="x-body">
-    <form class="layui-form layui-form-pane" action="" id="add">
-        <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
-            <div class="layui-tab-content" >
-                <div class="layui-tab-item layui-show">
-                    <input type="hidden" name="id" value=""/>
-
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">
-                            <span class='x-red'>*</span>所属小区
-                        </label>
-                        <div class="layui-input-block">
-                            <select name="community_id" id="community_id" lay-filter="aihao">
-                                <option value="0">---请选择所属小区---</option>
-                                <option value="1" >东湖小区</option>
-                                <option value="2" >金华万府</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">
-                            <span class='x-red'>*</span>栋数
-                        </label>
-                        <div class="layui-input-block">
-                            <select name="building_id" id="building_id">
-
-                                <option value="0"></option>
-
-                            </select>
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">
-                            <span class='x-red'>*</span>房产名称
-                        </label>
-                        <div class="layui-input-block">
-                            <input type="text" name="home_name" autocomplete="off" placeholder="空制在80个汉字，160个字符以内"
-                                   class="layui-input" value="">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">
-                            <span class='x-red'>*</span>户主名称
-                        </label>
-                        <div class="layui-input-block">
-                            <input type="text" name="householder" autocomplete="off" placeholder=""
-                                   class="layui-input" value="">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">
-                            <span class='x-red'>*</span>联系方式
-                        </label>
-                        <div class="layui-input-block">
-                            <input type="text" name="phone" autocomplete="off" placeholder=""
-                                   class="layui-input" lay-verify="required|phone" value="">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">
-                            <span class='x-red'>*</span>房间数
-                        </label>
-                        <div class="layui-input-block">
-                            <input type="text" name="home_number" autocomplete="off" placeholder=""
-                                   class="layui-input" lay-verify="required|number" value="">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">
-                            <span class='x-red'>*</span>单元
-                        </label>
-                        <div class="layui-input-block">
-                            <input type="text" name="unit_building" autocomplete="off" placeholder="请输入数字"
-                                   class="layui-input" lay-verify="required|number" value="">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">
-                            <span class='x-red'>*</span>楼层
-                        </label>
-                        <div class="layui-input-block">
-                            <input type="text" name="floor" autocomplete="off" placeholder="请输入数字"
-                                   class="layui-input" lay-verify="required|number" value="">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">
-                            <span class='x-red'>*</span>入住时间
-                        </label>
-
-                        <div class="layui-input-inline">
-                            <input class="layui-input" name="rz_time" placeholder="入住时间" id="LAY_demorange_s" value="">
-                        </div>
-
-                    </div>
-                    <div class="layui-form-item layui-form-text">
-                        <label class="layui-form-label">
-                            <span class='x-red'>*</span>描述
-                        </label>
-                        <div class="layui-input-block">
-                            <textarea placeholder="请输入内容" name="desc" class="layui-textarea"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <button class="layui-btn" type="button" lay-filter="add" lay-submit="">
-                            保存
-                        </button>
-                    </div>
-                    <!--</form>-->
-                    <div style="height:100px;"></div>
-                </div>
-
-            </div>
-
-        </div>
-    </form>
+<div id="app">
+    <div class="x-body">
+        <el-form :model="house" :rules="rules" ref="houseFormRef" label-width="120px" class="demo-ruleForm">
+            <el-form-item label="房屋名称" prop="name">
+                <el-input v-model="house.name"/>
+            </el-form-item>
+            <el-form-item label="所属小区" prop="communityName">
+                <el-select v-model="community.name" placeholder="按小区进行筛选" @change="setcom" >
+                    <el-option
+                            v-for="item in communities"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.name">
+                    </el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="所属楼栋" prop="">
+                <el-select v-model="building.name" placeholder="请选择" @change="setbu">
+                    <el-option
+                            v-for="item in buildings"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.name">
+                    </el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="房屋编号" prop="code">
+                <el-input v-model="house.code"/>
+            </el-form-item>
+            <!--可优化部分START-->
+            <el-form-item label="所属业主ID" prop="ownerId">
+                <el-input v-model="house.ownerId"/>
+            </el-form-item>
+            <el-form-item label="所属业主姓名" prop="ownerName">
+                <el-input v-model="house.ownerName"/>
+            </el-form-item>
+            <!--可优化部分END-->
+            <el-form-item label="联系方式" prop="telephone">
+                <el-input v-model="house.telephone"/>
+            </el-form-item>
+            <el-form-item label="房间数量" prop="roomNum">
+                <el-input v-model="house.roomNum"/>
+            </el-form-item>
+            <el-form-item label="单元" prop="unit">
+                <el-input v-model="house.unit"/>
+            </el-form-item>
+            <el-form-item label="楼层" prop="floor">
+                <el-input v-model="house.floor"/>
+            </el-form-item>
+            <el-form-item label="描述" prop="description">
+                <el-input v-model="house.description"/>
+            </el-form-item>
+            <el-form-item label="入住时间" prop="liveTime">
+                <el-input v-model="house.liveTime"/>
+            </el-form-item>
+            <el-form-item label="防疫状态" prop="danger">
+                <el-radio-group v-model="house.danger">
+                    <el-radio label="0">安全</el-radio>
+                    <el-radio label="1">观察</el-radio>
+                    <el-radio label="2">隔离</el-radio>
+                </el-radio-group>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="save()" style="text-align: center">确认提交</el-button>
+                <el-button type="" @click="clear()" style="text-align: center">清空表单</el-button>
+            </el-form-item>
+        </el-form>
+    </div>
 </div>
 <script src="lib/layui/layui.js" charset="utf-8"></script>
 <script src="js/x-layui.js" charset="utf-8"></script>
 <script src="js/jquery.min.js" charset="utf-8"></script>
 <!--<script src="/static/xiyuan/js/jquery.js" charset="utf-8"></script>-->
-<script>
+<script src="/js/vue.js" charset="utf-8"></script>
+<script src="/js/index.js" charset="utf-8"></script>
+<script src="/js/axios.js" charset="utf-8"></script>
 
-    layui.use(['laydate','element','layer','form'], function(){
-        $ = layui.jquery;//jquery
+<script type="text/javascript">
+    var app=new Vue({
+        el:"#app",
+        data:{
+            title:"房屋信息新增界面",
+            house:{id:""},
+            fileList:[],
+            community:{},
+            building:{},
+            communities:[],
+            buildings:[],
+            home:{id:""},
+            searchMap:{"communityName": "",
+                       "buildingName":""},
+            rules:{
+                name:[{required:true,message:"住房名称",trigger:'blur'},
+                    {max:50,message: "长度不超过30个字符",trigger: 'blur'}],
+                buildingName: [{required: true,message:"所属楼栋",trigger:'change'}],
+                communityName:[{required:true,message:"所属小区",trigger:"change"}],
+                code:[{required:true,message:"房屋编号",trigger:'blur'},
+                    {max:30,message: "长度不超过30个字符",trigger: 'blur'}],
+                ownerId:[{required:true,message:"业主ID",trigger:'blur'},
+                    {max:30,message: "长度不超过30个字符",trigger: 'blur'}],
+                ownerName:[{required:true,message:"业主姓名",trigger:'blur'}],
+                telephone:[{required:true,message:"联系方式",trigger:'blur'},
+                    {min:10,message: "请输入正确手机号",trigger: 'blur'}],
+                roomNum:[{required:true,message:"房间数量",trigger:'blur'}],
+                unit:[{required:true,message:"单元",trigger:'blur'}],
+                floor:[{required:true,message:"楼层",trigger:'blur'}],
+                description:[{required:true,message:"描述",trigger:'blur'}],
+                liveTime:[{required:true,message:"入住时间",trigger:'change'}],
+                danger:[{required:true,message:"防疫状态",trigger:'change'}]
+            },
+        },
 
-        laydate = layui.laydate;//日期插件
-        lement = layui.element();//面包导航
-        layer = layui.layer;//弹出层
-
-        form = layui.form();
-        okLoading.close($);
-        form.render();
-        var start = {
-            min: laydate.now()
-            ,max: '2099-06-16 23:59:59'
-            ,istoday: false
-            ,choose: function(datas){
-                //end.min = datas; //开始日选好后，重置结束日的最小日期
-                //end.start = datas //将结束日的初始值设定为开始日
-            }
-        };
-
-        document.getElementById('LAY_demorange_s').onclick = function(){
-            start.elem = this;
-            laydate(start);
-        };
-
-        //监听提交
-        form.on('submit(add)', function(data){
-            var home_name=$("input[name='home_name']").val();
-            var householder=$("input[name='householder']").val();
-            if(home_name==""){
-                layer.msg('房产名称不能为空',{icon:5,time:2000});return false;
-            }
-            if(householder==""){
-                layer.msg('户主名称不能为空',{icon:5,time:2000});return false;
-            }
-            var data=data.field;
-            $.ajax({
-                type:"post",
-                url:"/xiyuan/home/add.html",
-                data:data,
-                dataType:"json",
-                success:function(data)
-                {
-                    //alert(1);
-                    if(data.status==1)
-                    {
-                        layer.msg(data.info, {icon: 6,time:2000},function () {
-                            window.parent.location.reload();
-                            var index = parent.layer.getFrameIndex(window.name);
-                            parent.layer.close(index);
+        methods:{
+            getQueryString(name) {
+                let reg=`(^|&)${name}=([^&]*)(&|$)`
+                let r=window.location.search.substr(1).match(reg)
+                if(r!=null)return unescape(r[2]);return null;
+            },
+            findById() {
+                axios.get("backend/house/FindById?id=" + this.house.id).then((res) => {
+                    this.house = res.data.data;
+                });
+            },
+            clear(){
+                this.$refs.houseFormRef.resetFields();
+            },
+            setcid(){
+                app.house.communityId=this.community.id;
+                app.house.communityName=this.community.name;
+            },
+            setbid(){
+                app.house.communityId=this.building.id;
+                app.house.communityName=this.building.name;
+            },
+            getcommunities(){
+                axios.get("backend/community/CommunityList").then((res)=>{
+                    app.communities=res.data;
+                })
+            },
+            getbuildings(){
+                axios.post("backend/building/GetBuildingList",this.searchMap).then((res)=>{
+                    app.buildings=res.data;
+                })
+            },
+            setcom(){
+                for(var i=0;i<app.communities.length;i++){
+                    if(app.communities[i].name===app.community.name){
+                        app.community.id=app.communities[i].id;
+                        break;
+                    }
+                }
+                app.house.communityId=app.community.id;
+                app.house.communityName=app.community.name;
+                app.searchMap.communityName=app.community.name;
+                this.getbuildings();
+            },
+            setbu(){
+                for(var i=0;i<app.buildings.length;i++){
+                    if(app.buildings[i].name===app.building.name){
+                        app.building.id=app.buildings[i].id;
+                        break;
+                    }
+                }
+                app.house.buildingName=app.building.name;
+                app.house.buildingId=app.building.id;
+            },
+            save(){
+                var method="";
+                if(this.house.id != null){
+                    method="UpdateHouse"
+                }else{
+                    method="AddHouse"
+                }
+                axios.post("/backend/house/"+method,this.house).then((res)=>{
+                    if(res.data.flag) {
+                        this.$message({
+                            message: res.data.message,
+                            type: 'success'
                         });
-                        return false;
-
                     }
-                    else{
-                        layer.msg(data.info,{icon:5,time:2000});return false;
-                    }
-                }
+                });
+            },
 
+        },
+
+        created:function (){
+            layui.use(['element', 'layer', 'form'], function () {
+                $ = layui.jquery;//jquery
+                lement = layui.element();//面包导航
+                layer = layui.layer;//弹出层
+                form = layui.form();
+                okLoading.close($);
             });
-
-        });
-        form.on('select(aihao)', function(data){
-            communidy();
-        });
-        $(function () {
-            communidy();
-        });
-        //communidy();
-        function communidy() {
-            var communidy = $("#community_id").val();
-
-            $.ajax({
-                url:"/xiyuan/home/building.html",
-                type:"post",
-                dataType:"json",
-                data:{communidy:communidy},
-                success:function (data) {
-
-                    var dlen =data.length;
-                    var str='';
-                    for (var i=0;i<dlen;i++){
-                        var dt=data[i];
-                        str +='<option value="' + dt.id + '">';
-                        str +=dt.buildings_name;
-                        str +='</option>';
-                    }
-
-                    $("#building_id").html(str);
-                    form.render('select', 'aihao');
-                    //form.render('#building_id');
-
-                }
-            })
+            app.home.id=this.getQueryString("id");
+            this.house.id=this.home.id;
+            console.log(app.home.id);
+            if(this.house.id!=null){
+                this.title="修改楼栋信息";
+                this.findById();};
+            this.getcommunities();
+            this.getbuildings();
         }
-
-
     })
+
+
+
+
 </script>
 <!--栏目缩略图上传-->
-<script>
-
-    /*$("#community_id").blur(function(){
-        communidy()
-    });*/
-
-
-    //window.onload = communidy;
-
-</script>
 
 </body>
 </html>
