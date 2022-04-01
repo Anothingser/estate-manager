@@ -110,7 +110,6 @@
             building:{},
             communities:[],
             buildings:[],
-            home:{id:""},
             searchMap:{"communityName": "",
                        "buildingName":""},
             rules:{
@@ -136,9 +135,17 @@
 
         methods:{
             getQueryString(name) {
-                let reg=`(^|&)${name}=([^&]*)(&|$)`
-                let r=window.location.search.substr(1).match(reg)
-                if(r!=null)return unescape(r[2]);return null;
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+                var reg_rewrite = new RegExp("(^|/)" + name + "/([^/]*)(/|$)", "i");
+                var r = window.location.search.substr(1).match(reg);
+                var q = window.location.pathname.substr(1).match(reg_rewrite);
+                if(r != null){
+                    return unescape(r[2]);
+                }else if(q != null){
+                    return unescape(q[2]);
+                }else{
+                    return null;
+                }
             },
             findById() {
                 axios.get("backend/house/FindById?id=" + this.house.id).then((res) => {
@@ -215,9 +222,7 @@
                 form = layui.form();
                 okLoading.close($);
             });
-            app.home.id=this.getQueryString("id");
-            this.house.id=this.home.id;
-            console.log(app.home.id);
+            this.house.id=this.getQueryString("id");
             if(this.house.id!=null){
                 this.title="修改楼栋信息";
                 this.findById();};

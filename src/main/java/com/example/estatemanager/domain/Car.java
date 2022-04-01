@@ -13,6 +13,10 @@ public class Car extends BaseDomain implements Serializable {
 
     private Integer ownerId;
 
+    private String ownerName;
+
+    private Integer communityId;
+
     private String color;
 
     private String carNumber;

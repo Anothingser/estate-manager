@@ -4,13 +4,15 @@ import lombok.Data;
 
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 @Data
 @Table(name="owner")
 public class Owner extends BaseDomain implements Serializable {
 
     private Integer communityId;
+
+    private String communityName;
 
     private Integer HouseId;
 

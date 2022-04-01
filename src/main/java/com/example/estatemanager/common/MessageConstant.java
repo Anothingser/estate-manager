@@ -25,6 +25,16 @@ public class MessageConstant {
     public static final String HOUSE_ADD_SUCCESS="住房信息添加成功";
     public static final String HOUSE_UPDATE_SUCCESS="住房信息更新成功";
     public static final String HOUSE_DELETE_SUCCESS="住房信息删除成功";
+    //---------------------------业主（Owner）操作消息提示信息-------------------------------------------
+    public static final String OWNER_SEARCH_SUCCESS="业主信息查找成功";
+    public static final String OWNER_ADD_SUCCESS="业主信息添加成功";
+    public static final String OWNER_UPDATE_SUCCESS="业主信息更新成功";
+    public static final String OWNER_DELETE_SUCCESS="业主信息删除成功";
+    //---------------------------车辆（Car）操作消息提示信息---------------------------------------------
+    public static final String CAR_SEARCH_SUCCESS="业主信息查找成功";
+    public static final String CAR_ADD_SUCCESS="业主信息添加成功";
+    public static final String CAR_UPDATE_SUCCESS="业主信息更新成功";
+    public static final String CAR_DELETE_SUCCESS="业主信息删除成功";
     //---------------------------系统提示信息----------------------------------------------------------
     public static final String SYSTEM_BUSY = "系统繁忙，请求稍后重试！";
     //---------------------------文件上传提示信息-------------------------------------------------------
@@ -33,5 +43,6 @@ public class MessageConstant {
     public static final String INCORRECT_DIRECTORY_NAME = "目录名不正确!";
     public static final String SIZE_EXCEEDS__LIMIT = "上传文件大小超过限制!";
     public static final String FILE_TYPE_ERROR = "文件类型错误，只允许上传JPG/PNG/JPEG/GIF等图片类型的文件!";
+    public static final String OPERATE_SUCCESS = "操作成功";
 
 }

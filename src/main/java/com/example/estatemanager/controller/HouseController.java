@@ -9,10 +9,7 @@ import com.example.estatemanager.domain.House;
 import com.example.estatemanager.service.HouseService;
 import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -55,8 +52,7 @@ public class HouseController {
     }
 
     @RequestMapping("/FindById")
-    public Result FindById(String iad){
-        Integer id=Integer.parseInt(iad);
+    public Result FindById(Integer id){
         return new Result(true,StatusCode.OK,
                 MessageConstant.HOUSE_SEARCH_SUCCESS,houseService.FindById(id));
     }

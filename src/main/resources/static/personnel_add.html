@@ -13,7 +13,10 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" href="css/main.css" media="all">
+    <link rel="stylesheet" href="/css/index.css">
     <script type="text/javascript" src="lib/loading/okLoading.js"></script>
+
+
     <style>
         .imgs{display: none;}
         .picture{display: none;}
@@ -22,304 +25,210 @@
 </head>
 <body>
 
-<div class="x-body">
-    <form class="layui-form layui-form-pane" action="" id="add">
-        <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
-            <input type="hidden" name="id" value="">
-            <div class="layui-tab-content" >
-                <div class="layui-tab-item layui-show">
-                    <!--<form class="layui-form layui-form-pane" action="" id="add">-->
-
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">
-                            <span class='x-red'>*</span>所属小区
-                        </label>
-                        <div class="layui-input-block">
-                            <select name="community_id" id="community_id" lay-filter="aihao">
-                                <option value="0">---请选择所属小区---</option>
-                                <option value="1" >东湖小区</option>
-                                <option value="2" >金华万府</option>
-
-                            </select>
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">
-                            <span class='x-red'>*</span>所属房产
-                        </label>
-                        <div class="layui-input-block">
-                            <select name="home_id" id="home_id">
-
-                                <option value="0">顶级栏目</option>
-
-                            </select>
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">
-                            <span class='x-red'>*</span>成员名称
-                        </label>
-                        <div class="layui-input-block">
-                            <input type="text" name="member_name" autocomplete="off" placeholder="输入成员名称"
-                                   class="layui-input" lay-verify="required" lay-reqtext="成员名称是必填项，岂能为空？" value="">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">
-                            <span class='x-red'>*</span>身份证号
-                        </label>
-                        <div class="layui-input-block">
-                            <input type="text" name="sfzmhm" autocomplete="off" placeholder="请输入身份证号码"
-                                   class="layui-input" maxlength="18" lay-verify="identity" value="">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">
-                            <span class='x-red'>*</span>出生日期
-                        </label>
-
-                        <div class="layui-input-inline">
-                            <input class="layui-input" name="birthday" placeholder="出生日期" id="LAY_demorange_s" value="" >
-                        </div>
-
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">
-                            <span class='x-red'>*</span>联系方式
-                        </label>
-                        <div class="layui-input-block">
-                            <input type="text" name="phone" autocomplete="off" placeholder=""
-                                   class="layui-input" maxlength="11" lay-verify="required|phone" value="">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">
-                            <span class='x-red'>*</span>职业
-                        </label>
-                        <div class="layui-input-block">
-                            <input type="text" name="occupation" autocomplete="off" placeholder=""
-                                   class="layui-input" value="">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">
-                            <span class='x-red'>*</span>性别
-                        </label>
-                        <div class="layui-input-block">
-                            <input type="radio" name="sex" value="1" title="男" checked="checked">
-                            <div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon layui-anim-scaleSpring"></i>
-                                <div>男</div>
-                            </div>
-                            <input type="radio" name="sex" value="0" title="女">
-                            <div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i>
-                                <div>女</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">
-                            <span class='x-red'>*</span>成员类型
-                        </label>
-                        <div class="layui-input-block">
-                            <input type="radio" name="personnel_type" value="1" title="业主" checked="checked">
-                            <div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon layui-anim-scaleSpring"></i>
-                                <div>业主</div>
-                            </div>
-                            <input type="radio" name="personnel_type" value="2" title="家庭成员">
-                            <div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i>
-                                <div>家庭成员</div>
-                            </div>
-                            <input type="radio" name="personnel_type" value="3" title="租户">
-                            <div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i>
-                                <div>租户</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label for="link" class="layui-form-label">
-                            <span class="x-red">*</span>成员照片
-                        </label>
-                        <div class="layui-input-inline">
-                            <div class="site-demo-upbar">
-                                <div class=" layui-upload-button" style="border:#FFFFFF ;">
-                                    <!--<form target="layui-upload-iframe" method="post" key="set-mine" enctype="multipart/form-data" action="">
-                                        <input type="file" class="layui-upload-file"  id="previewImg" name="images" onchange="upload()">
-                                    </form>
-                                    <span class="layui-upload-icon"><i class="layui-icon"></i>上传图片</span>-->
-                                    <button type="button" class="layui-btn" id="test1">
-                                        <i class="layui-icon">&#xe67c;</i>上传图片
-                                    </button>
-                                    <input class="layui-upload" type="file" accept="undefined" id="previewImg" name="images" onchange="upload(this,)">
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <a href="javascript:;" style="" class="layui-btn " id="cancel"><i class="layui-icon">ဂ</i>撤销上传</a>
-                    </div>
-                    <div class="layui-form-item imgs" id="imgshow">
-                        <label  class="layui-form-label">成员照片展示
-                        </label>
-
-                        <img src="" id="pimages" name="pimages" style="width: 400px;height: 200px;"/>
-                        <input id="avatar"   name="image" required="" type="hidden"  value="">
-                    </div>
-
-                    <div class="layui-form-item layui-form-text">
-                        <label class="layui-form-label">
-                            <span class='x-red'>*</span>描述
-                        </label>
-                        <div class="layui-input-block">
-                            <textarea placeholder="请输入内容" name="desc" class="layui-textarea"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <button class="layui-btn" type="button" lay-filter="add" lay-submit="">
-                            保存
-                        </button>
-                    </div>
-                    <!--</form>-->
-                    <div style="height:100px;"></div>
-                </div>
-
-
-
-            </div>
-
-        </div>
-    </form>
+<div class="x-body" id="app">
+<el-form :model="owner" :rule="rules" ref="ownerFormRef" label-width="120px" class="demo-ruleForm">
+    <el-form-item label="业主姓名" prop="name">
+        <el-input v-model="owner.name"/>
+    </el-form-item>
+    <el-form-item label="身份证号码" prop="idcard">
+        <el-input v-model="owner.idcard"/>
+    </el-form-item>
+    <el-form-item label="联系电话" prop="telephone">
+        <el-input v-model="owner.telephone"/>
+    </el-form-item>
+    <el-form-item label="职业" prop="profession">
+        <el-input v-model="owner.profession"/>
+    </el-form-item>
+    <el-form-item label="性别" prop="gender">
+        <el-radio-group v-model="owner.gender">
+            <el-radio label="男">男</el-radio>
+            <el-radio label="女">女</el-radio>
+        </el-radio-group>
+    </el-form-item>
+    <el-form-item label="出生日期" prop="birthday">
+        <el-date-picker
+                v-model="owner.birthday"
+                type="datetime"
+                placeholder="选择日期时间">
+        </el-date-picker>
+    </el-form-item>
+    <el-form-item label="所属社区" prop="communityName">
+        <el-select v-model="community.name" placeholder="请选择" @change="setCommunity">
+            <el-option id="selects"
+                       v-for="item in communities"
+                       :key="item.id"
+                       :label="item.name"
+                       :value="item.name">
+            </el-option>
+        </el-select>
+    </el-form-item>
+    <el-form-item label="所属住户ID号" prop="houseId">
+        <el-input v-model="owner.houseId"/>
+    </el-form-item>
+    <el-form-item label="备注" prop="remark">
+        <el-input v-model="owner.remark"/>
+    </el-form-item>
+    <el-form-item label="照片上传" prop="picture">
+        <el-upload
+            class="upload-demo"
+            action="/estate/fileupload"
+            :on-preview="handlePreview"
+            :on-success="handleSuccess"
+            :file-List="fileList"
+            list-type="picture">
+            <el-button size="small" type="primary">点击上传</el-button>
+            <div slot="tip" class="el-upload_tip">请上传用户照片，大小不超过5MB</div>
+        </el-upload>
+    </el-form-item>
+    <el-form-item label="个人健康码信息" prop="danger">
+        <el-radio-group v-model="owner.danger">
+            <el-radio label="0">绿码</el-radio>
+            <el-radio label="1">黄码</el-radio>
+            <el-radio label="2">红码</el-radio>
+        </el-radio-group>
+    </el-form-item>
+    <el-form-item label="租客类型" prop="type">
+        <el-radio-group v-model="owner.type">
+            <el-radio label="0">屋主</el-radio>
+            <el-radio label="1">住户</el-radio>
+            <el-radio label="2">租客</el-radio>
+        </el-radio-group>
+    </el-form-item>
+    <el-form-item>
+        <el-button type="primary" @click="save()" style="text-align: center">保存</el-button>
+        <el-button @click="clearAll()" style="text-align: center">重置</el-button>
+    </el-form-item>
+</el-form>
 </div>
 <script src="lib/layui/layui.js" charset="utf-8"></script>
 <script src="js/x-layui.js" charset="utf-8"></script>
-
+<script src="/js/vue.js" charset="utf-8"></script>
+<script src="/js/index.js" charset="utf-8"></script>
+<script src="/js/axios.js" charset="utf-8"></script>
 <script>
-    layui.use(['laydate','element','layer','form'], function(){
-        $ = layui.jquery;//jquery
-        lement = layui.element();//面包导航
-        layer = layui.layer;//弹出层
-        form = layui.form();
-        laydate = layui.laydate;//日期插件
-        okLoading.close($);
-        form.render();
-        var start = {
-            min: laydate.now()
-            ,max: '2099-06-16 23:59:59'
-            ,istoday: false
-            ,choose: function(datas){
-                //end.min = datas; //开始日选好后，重置结束日的最小日期
-                //end.start = datas //将结束日的初始值设定为开始日
+    var app=new Vue({
+        el:"#app",
+        data:{
+            owner:{id:""},
+            community:{id:""},
+            communities:[],
+            fileList:[],
+            title:"添加业主信息",
+            rules:{
+                name:[{required:true,message:'请输入业主姓名',trigger:'blur'},
+                    {max:50,message: '长度不超过10个中文汉字',trigger: 'blur'}],
+                idcard:[{required: true,message:'请输入业主身份证号码',trigger:'blur'},
+                    {min:18,message:'长度为18位',trigger: 'blur' }],
+                telephone: [{required:true,message:'联系方式',trigger:'blur'}],
+                profession:[{required:true,message:'职业',trigger:'blur'}],
+                gender:[{required:true,message:'选择性别',trigger:'change'}],
+                communityName:[{required:true,message:'选择小区',trigger:'change'}],
+                houseId:[{required:true,message:'请输入住房的Id号',trigger:'blur'}],
+                remark:[{required:true,message:'备注',trigger:'blur'}],
+                birthday:[{required:true,message:'选择生日',trigger:'change'}],
+                danger:[{required:true,message:'健康码状态',trigger:'change'}],
+                picture:[{required:true,message:'上传照片',trigger:'change'}],
+                type:[{required:true,message:'业主类型',trigger:'change'}]
             }
-        };
-        document.getElementById('LAY_demorange_s').onclick = function(){
-            start.elem = this;
-            laydate(start);
-        };
-        //图片上传接口
-        /*layui.upload({
-          url: './upload.json' //上传接口
-          ,success: function(res){ //上传成功后的回调
-              console.log(res);
-            $('#LAY_demo_upload').attr('src',res.url);
-          }
-        });*/
+        },
 
-
-        //监听提交
-        form.on('submit(add)', function(data){
-            var member_name=$("input[name='member_name']").val();
-            var data=data.field;
-            if(member_name==""){
-                layer.msg('成员名称不能为空',{icon:5,time:2000});return false;
-            }
-
-            $.ajax({
-                type:"post",
-                url:"xxx",
-                data:data,
-                dataType:"json",
-                success:function(data){
-                    if(data.status==1){
-                        layer.msg(data.info, {icon: 6,time:2000},function () {
-                            window.parent.location.reload();
-                            var index = parent.layer.getFrameIndex(window.name);
-                            parent.layer.close(index);
+        methods:{
+            /*根据Id取值*/
+            findById(){
+                axios.get("/backend/owner/FindById?id="+this.owner.id).then((res)=>{
+                    app.owner=res.data.data;
+                    app.fileList.push({url:"http://localhost/estate"+app.owner.picture});
+                });
+            },
+            handleSuccess(response,file,fileList){
+                this.owner.picture=response.data;
+                console.log(response);
+                console.log(this.owner.picture);
+            },
+            handleRemove(){
+                axios.get("/estate/delfile?fileName="+this.owner.picture).then((res)=>{
+                    app.owner.picture="";
+                    if(res.data.flag){
+                        app.fileList=[];
+                        this.$message({
+                            message: '图片删除成功',
+                            type: 'success'
                         });
-                        return false;
                     }
-                    else{
-                        layer.msg(data.info,{icon:5,time:2000});return false;
+                });
+            },
+            handlePreview(file) {
+                console.log(file);
+            },
+            handleExceed(files, fileList) {
+                this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+            },
+            //文件删除提示
+            beforeRemove(file, fileList) {
+                return this.$confirm(`确定移除 ${ file.name }？`);
+            },
+            getQueryString(name){
+                let reg = `(^|&)${name}=([^&]*)(&|$)`
+                let r = window.location.search.substr(1).match(reg);
+                if (r != null) return unescape(r[2]); return null;
+            },
+            clearAll() {
+                this.$refs.ownerFormRef.resetFields();
+                if(this.fileList.length>0) {
+                    this.handleRemove();
+                }
+            },
+            save(){
+                var method = "";
+                if(this.owner.id != null){
+                    method = "UpdateOwner"
+                }else{
+                    method = "AddOwner"
+                }
+                axios.post("/backend/owner/"+method,this.owner).then((res)=>{
+                    if(res.data.flag){
+                        this.$message({
+                            message: res.data.message,
+                            type: 'success'
+                        });
+                    }
+                });
+            },
+            getcommunities(){
+                axios.get("backend/community/CommunityList").then((res)=>{
+                    app.communities=res.data;
+                })
+            },
+            setCommunity(){
+                for(var i=0;i<app.communities.length;i++){
+                    if(app.communities[i].name===app.community.name){
+                        app.community.id=app.communities[i].id;
+                        break;
                     }
                 }
+                app.owner.communityId=app.community.id;
+                app.owner.communityName=app.community.name;
+            },
 
+        },
+        created:function (){
+            layui.use(['element','layer','form'], function(){
+                $ = layui.jquery;//jquery
+                lement = layui.element();//面包导航
+                layer = layui.layer;//弹出层
+                form = layui.form();
+                okLoading.close($);
             });
-
-        });
-
-        form.on('select(aihao)', function(data){
-            communidy();
-        });
-        $(function () {
-            communidy();
-        });
-        //communidy();
-        function communidy() {
-            var communidy = $("#community_id").val();
-            $.ajax({
-                url:"xxx",
-                type:"post",
-                dataType:"json",
-                data:{communidy:communidy},
-                success:function (data) {
-                    //console.log(data);
-                    var dlen =data.length;
-                    var str='';
-                    for (var i=0;i<dlen;i++){
-                        var dt=data[i];
-                        str +='<option value="' + dt.id + '">';
-                        str +=dt.home_name;
-                        str +='</option>';
-                    }
-
-                    $("#home_id").html(str);
-                    form.render('select', 'aihao');
-                    //form.render('#building_id');
-
-                }
-            })
+            this.owner.id=this.getQueryString("id");
+            if(this.owner.id!=null && this.owner.id !=''){
+                this.title='修改业主信息';
+                this.findById();
+            }
+            this.getcommunities();
         }
 
     })
-</script>
-<!--栏目缩略图上传-->
-<script>
-    function upload(obj,id){
-        var formData = new FormData();
-        formData.append('images', $('#previewImg')[0].files[0]);
-        formData.append('id', id);//将id追加再id中
-        //console.log(formData);
-        layer.msg('图片上传中', {icon: 16});
-        $.ajax({
-            type:"post",
-            processData: false,
-            contentType: false,
-            url:"xxx",
-            data:formData,
-            success:function(data){
-                if(data.status == 1){
-                    console.log(data.image_name);
-                    layer.closeAll('loading');
-                    //layer.msg(data.info,{icon:1,time:1000});
-                    $("#pimages").attr('src',data.image_name);
-                    $("#avatar").val(data.image_name);
-                    $(".imgs").show();
-                    return false;
-                }else{
-                    layer.msg(data.info,{icon:2,time:1000});
-                }
-            }
-        });
-    }
+
 </script>
 
 </body>
