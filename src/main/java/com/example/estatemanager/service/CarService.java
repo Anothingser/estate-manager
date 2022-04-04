@@ -17,4 +17,6 @@ public interface CarService {
     boolean UpdateCar(Car car);
 
     Boolean DeleteCar(List<Integer> ids);
+
+    Car FindCarByCN(String carNumber);
 }

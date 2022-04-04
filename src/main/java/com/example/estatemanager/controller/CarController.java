@@ -57,4 +57,18 @@ public class CarController {
         Boolean flag=carService.DeleteCar(ids);
         return new Result(true,StatusCode.OK,MessageConstant.CAR_DELETE_SUCCESS);
     }
+
+    /**
+     * 停车管理----根据车牌号查询车辆
+     * @param carNumber
+     * @return Car
+     */
+    @RequestMapping("FindCarByCN")
+    public Result FindCarByCN(String carNumber){
+        if(carService.FindCarByCN(carNumber)!=null){
+            return new Result(true,StatusCode.OK,MessageConstant.OPERATE_SUCCESS,carService.FindCarByCN(carNumber));
+        }else{
+            return new Result(false,StatusCode.ERROR,MessageConstant.CAR_FINDCARBYCN_ERROR);
+        }
+    }
 }

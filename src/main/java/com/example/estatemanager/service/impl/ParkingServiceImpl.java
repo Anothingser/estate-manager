@@ -1,9 +1,9 @@
 package com.example.estatemanager.service.impl;
 
-import com.example.estatemanager.dao.CarMapper;
-import com.example.estatemanager.domain.Car;
+import com.example.estatemanager.dao.ParkingMapper;
 import com.example.estatemanager.domain.Owner;
-import com.example.estatemanager.service.CarService;
+import com.example.estatemanager.domain.Parking;
+import com.example.estatemanager.service.ParkingService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +16,15 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class CarServiceImpl implements CarService {
+public class ParkingServiceImpl implements ParkingService {
     @Autowired
-    private CarMapper carMapper;
+    private ParkingMapper parkingMapper;
 
     @Override
-    public Page<Car> SearchList(Map searchMap) {
+    public Page<Parking> SearchList(Map searchMap) {
         int pageNum = 1;
         int pageSize = 5;
-        Example example = new Example(Car.class);
+        Example example = new Example(Parking.class);
         Example.Criteria criteria = example.createCriteria();
         if (searchMap != null) {
             //时间判断
@@ -35,11 +35,11 @@ public class CarServiceImpl implements CarService {
                 criteria.andGreaterThanOrEqualTo("createTime", searchMap.get("endTime"));
             }
             //名称模糊查询
-            if (StringUtil.isNotEmpty((String) searchMap.get("communityId"))) {
-                criteria.orEqualTo("communityId", (String) "%" + (String) searchMap.get("communityId") + "%");
+            if (StringUtil.isNotEmpty((String) searchMap.get("communityName"))) {
+                criteria.andLike("communityName", (String) "%" + (String) searchMap.get("communityName") + "%");
             }
-            if (StringUtil.isNotEmpty((String) searchMap.get("name"))) {
-                criteria.orLike("ownerName", (String) "%" + (String) searchMap.get("name") + "%");
+            if (searchMap.get("status") !=null && searchMap.get("status") != ""){
+                criteria.andEqualTo("status",Integer.parseInt(searchMap.get("status").toString()));
             }
             if ((Integer) searchMap.get("pageNum") != null) {
                 pageNum = (Integer) searchMap.get("pageNum");
@@ -49,36 +49,29 @@ public class CarServiceImpl implements CarService {
             }
         }
         PageHelper.startPage(pageNum, pageSize);
-        return (Page<Car>) carMapper.selectByExample(example);
+        return (Page<Parking>) parkingMapper.selectByExample(example);
     }
 
     @Override
-    public Car FindById(Integer id) {
-        return carMapper.selectByPrimaryKey(id);
-    }
-
-    @Override
-    public boolean AddCar(Car car) {
-        if(carMapper.insert(car)==1)
+    public boolean AddParking(Parking parking) {
+        parking.setStatus(0);
+        if(parkingMapper.insert(parking)==1)
             return true;
         else
             return false;
     }
 
     @Override
-    public boolean UpdateCar(Car car) {
-        if(carMapper.updateByPrimaryKeySelective(car)==1)
-            return true;
-        else
-            return false;
+    public boolean UpdateParking(Parking parking) {
+        return parkingMapper.updateByPrimaryKeySelective(parking)==1?true:false;
     }
 
     @Override
     @Transactional
-    public Boolean DeleteCar(List<Integer> ids) {
+    public boolean DeleteParking(List<Integer> ids) {
         try{
             for(Integer i:ids){
-                carMapper.deleteByPrimaryKey(i);
+                parkingMapper.deleteByPrimaryKey(i);
             }
             return true;
         }catch (Exception e)
@@ -88,11 +81,22 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Car FindCarByCN(String carNumber) {
-        Car car=new Car();
-        car.setCarNumber(carNumber);
-        return carMapper.selectOne(car);
+    public boolean SetStatus(Integer status, Integer id) {
+        Parking parking=new Parking();
+        parking.setId(id);
+        parking.setStatus(status);
+        return parkingMapper.updateByPrimaryKeySelective(parking)==1?true:false;
     }
 
+    @Override
+    public Parking FindById(Integer id) {
+        return parkingMapper.selectByPrimaryKey(id);
+    }
 
+    @Override
+    public Parking FindParkingByCode(String code) {
+        Parking parking=new Parking();
+        parking.setCode(code);
+        return parkingMapper.selectOne(parking);
+    }
 }

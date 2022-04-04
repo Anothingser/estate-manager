@@ -108,8 +108,8 @@
             <td>{{car.remark}}</td>
             <td>{{dateFormat(car.createTime)}}</td>
             <td class="td-status">
-                <span :class="car.ifTempory == 0?'layui-btn layui-btn-normal':'layui-btn layui-btn-disabled'">
-                    {{car.ifTempory==0?'长期车辆':'临时车辆'}}
+                <span :class="car.ifTempory == 0?'layui-btn layui-btn-normal':car.ifTempory == 1?'layui-btn layui-btn':'layui-btn layui-btn-disabled'">
+                    {{car.ifTempory==0?'临时车辆':car.ifTempory==1?'月付车辆':'年付车辆'}}
                 </span>
             </td>
             <td class="td-manage">
