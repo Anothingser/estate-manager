@@ -43,8 +43,11 @@ public class ParkingUseServiceImpl implements ParkingUseService {
             if (StringUtil.isNotEmpty((String) searchMap.get("communityName"))) {
                 criteria.andLike("communityName", (String) "%" + (String) searchMap.get("communityName") + "%");
             }
-            if (searchMap.get("status") !=null && searchMap.get("status") != ""){
-                criteria.andEqualTo("status",Integer.parseInt(searchMap.get("status").toString()));
+            if (searchMap.get("status") !=null && searchMap.get("status") == "1"){
+                criteria.andIsNotNull("EndTime");
+            }
+            if (searchMap.get("status") !=null && searchMap.get("status") == "0"){
+                criteria.andIsNull("EndTime");
             }
             if ((Integer) searchMap.get("pageNum") != null) {
                 pageNum = (Integer) searchMap.get("pageNum");

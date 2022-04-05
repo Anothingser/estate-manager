@@ -47,6 +47,31 @@ public class MessageConstant {
     public static final String PARKINGUSE_UPDATE_SUCCESS="车位使用信息更新成功";
     public static final String PARKINGUSE_DELETE_SUCCESS="成功删除该条停车记录";
     public static final String PARKINGUSE_FINISH_SUCCESS="成功完成此次停车";
+    //---------------------------设备（Device）操作消息提示信息------------------------------------------
+    public static final String DEVICE_SEARCH_SUCCESS="设备信息查找成功";
+    public static final String DEVICE_ADD_SUCCESS="设备信息添加成功";
+    public static final String DEVICE_UPDATE_SUCCESS="设备信息更新成功";
+    public static final String DEVICE_DELETE_SUCCESS="设备信息删除成功";
+    //---------------------------报修（Repair）操作消息提示信息------------------------------------------
+    public static final String REPAIR_SEARCH_SUCCESS="报修信息查找成功";
+    public static final String REPAIR_ADD_SUCCESS="报修信息添加成功";
+    public static final String REPAIR_UPDATE_SUCCESS="报修信息更新成功";
+    public static final String REPAIR_DELETE_SUCCESS="报修信息删除成功";
+    //---------------------------投诉（Complaint）操作消息提示信息---------------------------------------
+    public static final String COMPLAINT_SEARCH_SUCCESS="报修信息查找成功";
+    public static final String COMPLAINT_ADD_SUCCESS="报修信息添加成功";
+    public static final String COMPLAINT_UPDATE_SUCCESS="报修信息更新成功";
+    public static final String COMPLAINT_DELETE_SUCCESS="报修信息删除成功";
+    //---------------------------收费项目（ChargeItem）操作消息提示信息-----------------------------------
+    public static final String CHARGEITEM_SEARCH_SUCCESS="收费项目信息查找成功";
+    public static final String CHARGEITEM_ADD_SUCCESS="收费项目信息添加成功";
+    public static final String CHARGEITEM_UPDATE_SUCCESS="收费项目信息更新成功";
+    public static final String CHARGEITEM_DELETE_SUCCESS="收费项目信息删除成功";
+    //---------------------------收费明细（ChargeDetail）操作消息提示信息---------------------------------
+    public static final String CHARGEDETAIL_SEARCH_SUCCESS="收费项目信息查找成功";
+    public static final String CHARGEDETAIL_ADD_SUCCESS="收费项目信息添加成功";
+    public static final String CHARGEDETAIL_UPDATE_SUCCESS="收费项目信息更新成功";
+    public static final String CHARGEDETAIL_DELETE_SUCCESS="收费项目信息删除成功";
     //---------------------------系统提示信息----------------------------------------------------------
     public static final String SYSTEM_BUSY = "系统繁忙，请求稍后重试！";
     //---------------------------文件上传提示信息-------------------------------------------------------

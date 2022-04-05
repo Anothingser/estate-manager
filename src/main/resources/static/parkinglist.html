@@ -108,7 +108,7 @@
             <td>{{parking.name}}</td>
             <td>{{dateFormat(parking.createTime)}}</td>
             <td class="td-status">
-                <span :class="parking.status==0?'layui-btn layui-btn-disable':'layui-btn layui-btn-normal'">
+                <span :class="parking.status==0?'layui-btn layui-btn-disable':'layui-btn layui-btn-danger'">
                     {{parking.status==0?'闲置中':'使用中'}}
                 </span>
             </td>
