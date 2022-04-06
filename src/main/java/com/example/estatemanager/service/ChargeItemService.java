@@ -17,4 +17,6 @@ public interface ChargeItemService {
     boolean DeleteChargeItem(List<Integer> ids);
 
     ChargeItem FindById(Integer id);
+
+    ChargeItem FindByCode(String code);
 }

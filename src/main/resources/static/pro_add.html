@@ -14,144 +14,118 @@
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" href="css/main.css" media="all">
     <script type="text/javascript" src="lib/loading/okLoading.js"></script>
-    <style>
-        .imgs{display: none;}
-    </style>
 
+    <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
-
-<div class="x-body">
-    <form class="layui-form layui-form-pane" action="" id="add">
-        <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
-            <div class="layui-tab-content" >
-                <div class="layui-tab-item layui-show">
-                    <input type="hidden" name="id" value="">
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">
-                            <span class='x-red'>*</span>所属小区
-                        </label>
-                        <div class="layui-input-block">
-                            <select name="community_id" id="community_id">
-
-                                <option value="0">---请选择小区---</option>
-                                <option value="1" >东湖小区</option>
-                                <option value="2" >金华万府</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">
-                            <span class='x-red'>*</span>项目名称
-                        </label>
-                        <div class="layui-input-block">
-                            <input type="text" name="project_name" autocomplete="off" placeholder="空制在80个汉字，160个字符以内"
-                                   class="layui-input" value="">
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <button class="layui-btn" type="button" lay-filter="add" lay-submit="">
-                            保存
-                        </button>
-                    </div>
-
-                    <div style="height:100px;"></div>
-                </div>
-
-
-
-            </div>
-
-        </div>
-    </form>
+<div class="x-body" id="app">
+    <el-form :model="chargeItem" :rules="rules" ref="chargeItemFormRef" label-width="120px" class="demo-ruleForm">
+        <el-form-item label="请选择小区" prop="communityId">
+            <el-select v-model="chargeItem.communityId" placeholder="请选择小区" @change="setCommunity()" >
+                <el-option
+                        v-for="item in communities"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id">
+                </el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item label="收费项目编号" prop="code">
+            <el-input v-model="chargeItem.code"></el-input>
+        </el-form-item>
+        <el-form-item label="收费项目名称" prop="name">
+            <el-input v-model="chargeItem.name"></el-input>
+        </el-form-item>
+        <el-form-item label="收费项目价格" prop="money">
+            <el-input v-model="chargeItem.money"></el-input>
+        </el-form-item>
+        <el-form-item>
+            <el-button type="primary" @click="save()" style="text-align: center">保存</el-button>
+            <el-button @click="clearAll()" style="text-align: center">重置</el-button>
+        </el-form-item>
+    </el-form>
 </div>
 <script src="lib/layui/layui.js" charset="utf-8"></script>
 <script src="js/x-layui.js" charset="utf-8"></script>
+<script src="js/vue.js" charset="utf-8"></script>
+<script src="js/index.js" charset="utf-8"></script>
+<script src="js/axios.js" charset="utf-8"></script>
+<script src="js/moment.min.js" charset="utf-8"></script>
 
 <script>
-    layui.use(['laydate','element','layer','form'], function(){
-        $ = layui.jquery;//jquery
-        lement = layui.element();//面包导航
-        layer = layui.layer;//弹出层
-        form = layui.form();
-        laydate = layui.laydate;//日期插件
-        okLoading.close($);
-        form.render();
-
-
-
-
-        //监听提交
-        form.on('submit(add)', function(data){
-            var project_name=$("input[name='project_name']:checked").val();
-            var community_id=$('#community_id option:selected') .val();//所属栏目ID
-
-            if(project_name==""){
-                layer.msg('项目名称不能为空',{icon:5,time:2000});return false;
+    var app=new Vue({
+        el:"#app",
+        data:{
+            title:"添加收费项目",
+            communities:[],
+            chargeItem:{id:""},
+            rules:{
+                communityId:[{required:true,message:'选择小区',trigger:'change'}],
+                name:[{required: true,message: '输入收费项目名称',trigger:'blur'}],
+                code:[{required:true,message:'输入收费项目编号',trigger:'blur'}],
+                money:[{required:true,message:'请输入收费价格',trigger:'blur'}]
             }
-            if(community_id==""){
-                layer.msg('所属小区不能为空',{icon:5,time:2000});return false;
-            }
-
-
-            var data=data.field;
-            $.ajax({
-                type:"post",
-                url:"xxx",
-                data:data,
-                dataType:"json",
-                success:function(data){
-                    if(data.status==1){
-                        layer.msg(data.info, {icon: 6,time:2000},function () {
-                            window.parent.location.reload();
-                            var index = parent.layer.getFrameIndex(window.name);
-                            parent.layer.close(index);
-                        });
-                        return false;
-
-                    }
-                    else{
-                        layer.msg(data.info,{icon:5,time:2000});return false;
-                    }
-                }
-
-            });
-
-        });
-
-    })
-</script>
-<!--栏目缩略图上传-->
-<script>
-    function upload()
-    {
-        var formData = new FormData();
-        formData.append('images', $('#previewImg')[0].files[0]);
-        //console.log(formData);
-        layer.msg('图片上传中', {icon: 16});
-        $.ajax({
-            type:"post",
-            processData: false,
-            contentType: false,
-            url:"xxx",
-            data:formData,
-            success:function(data){
-                if(data.status == 1){
-                    console.log(data.image_name);
-                    layer.closeAll('loading');
-                    //layer.msg(data.info,{icon:1,time:1000});
-                    $("#pimages").attr('src',data.image_name);
-                    $("#avatar").val(data.image_name);
-                    $(".imgs").show();
-                    return false;
+        },
+        methods:{
+            findById(){
+                axios.get("backend/chargeitem/FindById?id="+this.chargeItem.id).then((res)=>{
+                    this.chargeItem=res.data.data;
+                })
+            },
+            clearAll(){
+                this.$refs.chargeItemFormRef.resetFields();
+            },
+            save(){
+                var method='';
+                if(this.chargeItem.id!=null){
+                    method='UpdateChargeItem'
                 }else{
-                    layer.msg(data.info,{icon:2,time:1000});
+                    method='AddChargeItem'
                 }
+                axios.post("backend/chargeitem/"+method,this.chargeItem).then((res)=>{
+                    if(res.data.flag) {
+                        this.$message({
+                            message: res.data.message,
+                            type: 'success'
+                        });
+                    }
+                });
+            },
+            setCommunity() {
+                console.log(app.chargeItem.communityId);
+                axios.post("/backend/community/FindById?id="+app.chargeItem.communityId).then((res)=>{
+                    app.chargeItem.communityName=res.data.data.name;
+                })
+            },
+            getQueryString(name){
+                let reg = `(^|&)${name}=([^&]*)(&|$)`
+                let r = window.location.search.substr(1).match(reg);
+                if (r != null) return unescape(r[2]); return null;
+            },
+            getcommunities(){
+                axios.get("backend/community/CommunityList").then((res)=>{
+                    app.communities=res.data;
+                });
+
+            },
+        },
+        created:function (){
+            layui.use(['element','layer','form'], function(){
+                $ = layui.jquery;//jquery
+                lement = layui.element();//面包导航
+                layer = layui.layer;//弹出层
+                form = layui.form();
+                okLoading.close($);
+            });
+            this.chargeItem.id = this.getQueryString("id");
+            //根据小区ID获取小区对象，进行数据回显
+            if(this.chargeItem.id != null && this.chargeItem.id != ''){
+                this.title="修改收费项目信息";
+                this.findById();
             }
-        });
-    }
+            this.getcommunities();
+        }
+    })
 </script>
 
 </body>

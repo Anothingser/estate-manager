@@ -32,7 +32,7 @@ public class ChargeItemController {
     @RequestMapping("/AddChargeItem")
     public Result AddChargeItem(@RequestBody ChargeItem chargeItem){
         if(chargeItemService.AddChargeItem(chargeItem))
-            return new Result(true,StatusCode.OK,MessageConstant.CHARGEDETAIL_ADD_SUCCESS);
+            return new Result(true,StatusCode.OK,MessageConstant.CHARGEITEM_ADD_SUCCESS);
         else
             return new Result(false,StatusCode.ERROR,MessageConstant.SYSTEM_BUSY);
     }
@@ -40,7 +40,7 @@ public class ChargeItemController {
     @RequestMapping("/UpdateChargeItem")
     public Result UpdateChargeItem(@RequestBody ChargeItem chargeItem){
         if(chargeItemService.UpdateChargeItem(chargeItem))
-            return new Result(true,StatusCode.OK,MessageConstant.CHARGEDETAIL_UPDATE_SUCCESS);
+            return new Result(true,StatusCode.OK,MessageConstant.CHARGEITEM_UPDATE_SUCCESS);
         else
             return new Result(false,StatusCode.ERROR,MessageConstant.SYSTEM_BUSY);
     }
@@ -48,7 +48,7 @@ public class ChargeItemController {
     @RequestMapping("DeleteChargeItem")
     public Result DeleteChargeItem(@RequestBody List<Integer> ids){
         if(chargeItemService.DeleteChargeItem(ids))
-            return new Result(true,StatusCode.OK,MessageConstant.CHARGEDETAIL_DELETE_SUCCESS);
+            return new Result(true,StatusCode.OK,MessageConstant.CHARGEITEM_DELETE_SUCCESS);
         else
             return new Result(false,StatusCode.ERROR,MessageConstant.SYSTEM_BUSY);
     }
@@ -56,5 +56,15 @@ public class ChargeItemController {
     @RequestMapping("FindById")
     public Result FindById(Integer id){
         return new Result(true,StatusCode.OK,MessageConstant.OPERATE_SUCCESS,chargeItemService.FindById(id));
+    }
+
+    /**
+     * 收费明细界面调用==根据code查找对应的收费项目
+     * @param code
+     * @return Result
+     */
+    @RequestMapping("FindByCode")
+    public Result FindByCode(String code){
+        return new Result(true,StatusCode.OK,MessageConstant.OPERATE_SUCCESS,chargeItemService.FindByCode(code));
     }
 }

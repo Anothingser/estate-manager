@@ -55,7 +55,7 @@
         <button class="layui-btn layui-btn-danger" @click="del_ser()">
             <i class="layui-icon">&#xe640;</i>批量删除
         </button>
-        <button class="layui-btn" @click="pro_add('活动添加','pro_add.html','1000','600')">
+        <button class="layui-btn" @click="pro_add('收费项目添加','pro_add.html','1000','600')">
             <i class="layui-icon">&#xe608;</i>添加
         </button>
         <span class="x-right" style="line-height:40px">共有数据：<span class="layui-badge">{{total}}</span> 条</span></xblock>
@@ -78,6 +78,9 @@
                 项目名称
             </th>
             <th>
+                价格（￥）
+            </th>
+            <th>
                 创建时间
             </th>
             <th>
@@ -94,7 +97,8 @@
             <td>{{chargeItem.communityName}}</td>
             <td>{{chargeItem.code}}</td>
             <td>{{chargeItem.name}}</td>
-            <td>{{doteFormat(chargeItem.createTime)}}</td>
+            <td>{{chargeItem.money}}</td>
+            <td>{{dateFormat(chargeItem.createTime)}}</td>
             <td class="td-manage">
                 <a title="编辑" href="javascript:;" @click="pro_edit('编辑','pro_add.html',chargeItem.id,'1000','600')"
                    class="ml-5" style="text-decoration:none">
@@ -230,7 +234,7 @@
             /*分页查询*/
             search() {
                 axios.post("backend/chargeitem/SearchList", this.searchMap).then((res) => {
-                    app.repairList = res.data.data;
+                    app.chargeItemList = res.data.data;
                     app.total = res.data.total;
                 })
             },
