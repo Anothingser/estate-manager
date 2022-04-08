@@ -2,7 +2,6 @@ package com.example.estatemanager.service.impl;
 
 import com.example.estatemanager.dao.ComplaintMapper;
 import com.example.estatemanager.domain.Complaint;
-import com.example.estatemanager.domain.Repair;
 import com.example.estatemanager.service.ComplaintService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -11,8 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.util.StringUtil;
-
-import java.rmi.server.ExportException;
 import java.util.List;
 import java.util.Map;
 
@@ -95,5 +92,25 @@ public class ComplaintServiceImpl implements ComplaintService {
             return true;
         else
             return false;
+    }
+
+    /**
+     * 导航页抱怨条数
+     * @return Count
+     */
+    @Override
+    public Integer complaintCount() {
+        Complaint complaint=new Complaint();
+        complaint.setStatus(0);
+        return complaintMapper.selectCount(complaint);
+    }
+
+    @Override
+    public List<Complaint> GetTen() {
+        Example example = new Example(Complaint.class);
+        example.setOrderByClause("id Desc");
+        List<Complaint> list=complaintMapper.selectByExample(example);
+        list=list.subList(0,1);
+        return list;
     }
 }

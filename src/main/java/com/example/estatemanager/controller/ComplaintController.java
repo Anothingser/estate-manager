@@ -6,6 +6,7 @@ import com.example.estatemanager.common.Result;
 import com.example.estatemanager.common.StatusCode;
 import com.example.estatemanager.dao.ComplaintMapper;
 import com.example.estatemanager.domain.Complaint;
+import com.example.estatemanager.domain.Repair;
 import com.example.estatemanager.service.ComplaintService;
 import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,5 +60,19 @@ public class ComplaintController {
             return new Result(true, StatusCode.OK, MessageConstant.OPERATE_SUCCESS);
         else
             return new Result(false,StatusCode.ERROR,MessageConstant.SYSTEM_BUSY);
+    }
+
+    /**
+     * 导航页——最新的抱怨条数
+     * @return Count
+     */
+    @RequestMapping("/complaintCount")
+    public Integer complaintCount(){
+        return complaintService.complaintCount();
+    }
+
+    @RequestMapping("GetTen")
+    public List<Complaint> GetTen(){
+        return complaintService.GetTen();
     }
 }

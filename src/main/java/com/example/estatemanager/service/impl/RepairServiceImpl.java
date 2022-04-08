@@ -93,4 +93,17 @@ public class RepairServiceImpl implements RepairService {
         else
             return false;
     }
+
+    /**
+     * 主页面最新10条
+     * @return
+     */
+    @Override
+    public List<Repair> GetTen() {
+        Example example = new Example(Repair.class);
+        example.setOrderByClause("id Desc");
+        List<Repair> list=repairMapper.selectByExample(example);
+        list=list.subList(0,1);
+        return list;
+    }
 }

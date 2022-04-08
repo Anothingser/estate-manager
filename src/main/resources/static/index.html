@@ -20,7 +20,7 @@
     .hide_lits{display: none;}
 </style>
 <body>
-<div class="layui-layout layui-layout-admin">
+<div class="layui-layout layui-layout-admin" id="app">
     <div class="layui-header header header-demo">
         <div class="layui-main">
             <div class="admin-logo-box">
@@ -34,30 +34,30 @@
             <ul class="layui-nav" lay-filter="">
                 <li class="layui-nav-item" id="time" style="margin-right: 50px;font-size: 16px;color: #2fb9d4;position: absolute;left: -250px;top: 0"></li>
                 <li class="layui-nav-item"><img src="./images/tx.jpg" class="layui-circle" style="border: 2px solid #A9B7B7;" width="35px" height="35px" alt=""></li>
-                <li class="new-nav " id="gonggao">
-                    <i></i>
-                    <a href="#"><i class="iconfont">&#xe6bc;</i><span class="layui-badge">4</span></a>
-                    <ul class="news" id="gonggaos" style="display: none;">
-                        <li class="dropdown-header"><i class="iconfont">&#xe6bc;</i>4条活动</li>
-                        <li> <a href="javascript:;" onclick="xadmin.add_tab('统计页面','notice-list.html')">
-                            <div class="clearfix">
-                                <span class="pull-left"> <i class="btn btn-pink iconfont">&#xe6bc;</i> 小区活动 </span>
-                                <span class="pull-right badge badge-info">+12</span>
-                            </div> </a> </li>
-                        <li> <a href="javascript:;" > <i class="btn btn-primary iconfont">&#xe6bc;</i> 业主活动 </a> </li>
+<!--                <li class="new-nav " id="gonggao">-->
+<!--                    <i></i>-->
+<!--                    <a href="#"><i class="iconfont">&#xe6bc;</i><span class="layui-badge">4</span></a>-->
+<!--                    <ul class="news" id="gonggaos" style="display: none;">-->
+<!--                        <li class="dropdown-header"><i class="iconfont">&#xe6bc;</i>4条活动</li>-->
+<!--                        <li> <a href="javascript:;" onclick="xadmin.add_tab('统计页面','notice-list.html')">-->
+<!--                            <div class="clearfix">-->
+<!--                                <span class="pull-left"> <i class="btn btn-pink iconfont">&#xe6bc;</i> 小区活动 </span>-->
+<!--                                <span class="pull-right badge badge-info">+12</span>-->
+<!--                            </div> </a> </li>-->
+<!--                        <li> <a href="javascript:;" > <i class="btn btn-primary iconfont">&#xe6bc;</i> 业主活动 </a> </li>-->
 
-                        <li> <a href="javascript:;" >查看所有活动 <i class="iconfont">&#xe69b;</i> </a> </li>
-                    </ul>
-                </li>
+<!--                        <li> <a href="javascript:;" >查看所有活动 <i class="iconfont">&#xe69b;</i> </a> </li>-->
+<!--                    </ul>-->
+<!--                </li>-->
                 <li class="new-nav" id="new-nav">
                     <i></i>
-                    <a href="#"><i class="iconfont">&#xe713;</i><span class="layui-badge">5</span></a>
+                    <a href="#"><i class="iconfont">&#xe713;</i><span class="layui-badge">{{complaintCount}}</span></a>
                     <ul class="news" id="news" style="display: none;">
-                        <li class="dropdown-header"><i class="iconfont">&#xe6bc;</i>5条投诉</li>
+                        <li class="dropdown-header"><i class="iconfont">&#xe6bc;</i>{{complaintCount}}条投诉</li>
                         <li> <a href="#">
                             <div class="clearfix">
                                 <span class="pull-left"> <i class="btn btn-pink iconfont">&#xe69b;</i> 投诉 </span>
-                                <span class="pull-right badge badge-info">+5</span>
+                                <span class="pull-right badge badge-info">+{{complaintCount}}</span>
                             </div> </a> </li>
 
                         <li> <a href="javascript:;" > 查看所有投诉 <i class="iconfont">&#xe69b;</i> </a> </li>
@@ -283,8 +283,32 @@
 <script src="js/main.js"></script>
 <script src="js/jquery.min.js"></script>
 <script src="js/x-layui.js" charset="utf-8"></script>
+<!--引入Vue内容-->
+<script src="js/vue.js" charset="utf-8"></script>
+<script src="js/index.js" charset="utf-8"></script>
+<script src="js/axios.js" charset="utf-8"></script>
+<script src="js/moment.min.js" charset="utf-8"></script>
 
 <script>
+    /*新增的vue内容*/
+    var app=new Vue({
+        el:"#app",
+        data:{
+            complaintCount:''
+        },
+        methods:{
+            selectComplaintCount(){
+                axios.get("/backend/complaint/complaintCount").then((res)=>{
+                    app.complaintCount=res.data;
+                })
+            }
+        },
+        created:function (){
+            this.selectComplaintCount();
+        }
+    })
+    /*VUE END*/
+
     $(".daohang").click(function(){
         var table = $(this).attr("ids");
         var ids = $(".show_list").attr("id");

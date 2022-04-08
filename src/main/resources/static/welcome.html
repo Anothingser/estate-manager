@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="css/main.css" media="all">
         <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.css" media="all">
         <link rel="stylesheet" href="lib/bootstrap/js/bootstrap.min.js" media="all">
+        <link rel="stylesheet" href="css/index.css">
     </head>
     <body>
     <style type="text/css">
@@ -21,7 +22,7 @@
 	legend a{ color:#666;} legend a:hover{ text-decoration:none;}
 	.layui-table{ font-family: "Microsoft YaHei","Helvetica Neue";}
 	</style>
-        <div class="x-body">
+        <div class="x-body" id="app">
             <blockquote class="layui-elem-quote">
                 欢迎使用小区物业管理系统！<span class="f-14">v1.0</span> &nbsp;&nbsp;登录次数：520
             </blockquote>
@@ -32,7 +33,7 @@
                     </div>
                     <div class="value tab-menu" bind="1">
                         <a href="javascript:;" data-url="user-info.html" data-parent="true" data-title="总栋数"><i class="iconfont " data-icon=""></i>
-                            <h1>45</h1>
+                            <h1>{{totalCount.totalBuildings}}</h1>
                         </a>
 
                         <a href="javascript:;" data-url="user-info.html" data-parent="true" data-title="总栋数"> <i class="iconfont " data-icon=""></i><span>总栋数</span></a>
@@ -46,7 +47,7 @@
                     </div>
                     <div class="value tab-menu" bind="1">
                         <a href="javascript:;" data-url="user-info.html" data-parent="true" data-title="总户数"> <i class="iconfont " data-icon=""></i>
-                            <h1>600</h1>
+                            <h1>{{totalCount.totalHouses}}</h1>
                         </a>
 
                         <a href="javascript:;" data-url="user-info.html" data-parent="true" data-title="总户数"> <i class="iconfont " data-icon=""></i><span>总户数</span></a>
@@ -61,7 +62,7 @@
                     </div>
                     <div class="value tab-menu" bind="1">
                         <a href="javascript:;" data-url="user-info.html" data-parent="true" data-title="总人数"> <i class="iconfont " data-icon=""></i>
-                            <h1>8310</h1>
+                            <h1>{{totalCount.totalPeople}}</h1>
                         </a>
                         <a href="javascript:;" data-url="user-info.html" data-parent="true" data-title="总人数"> <i class="iconfont " data-icon=""></i><span>总人数</span></a>
                     </div>
@@ -74,7 +75,7 @@
                     </div>
                     <div class="value tab-menu" bind="1">
                         <a href="javascript:;" data-url="user-info.html" data-parent="true" data-title="租户数量"> <i class="iconfont " data-icon=""></i>
-                            <h1>1314</h1>
+                            <h1>{{totalCount.totalTenant}}</h1>
                         </a>
                         <a href="javascript:;" data-url="user-info.html" data-parent="true" data-title="租户数量"> <i class="iconfont " data-icon=""></i><span>租户数量</span></a>
                     </div>
@@ -94,60 +95,94 @@
                     <div class="panel-heading">小区人数</div>
                     <div class="panel-body">
                         <div class="echarts" id="area" style="height:300px; height:350px"></div>
+<!--                        <div id="container" style="height: 100%"></div>-->
                     </div>
                 </section>
         </div>
         <div class="col-sm-4">
          <section class="panel">
-                    <div class="panel-heading">投诉/满意度</div>
-                    <div class="panel-body">
-                        <div class="echarts" id="main" style="height:300px; height:350px"></div>
+                    <div class="panel-heading">停车位使用情况</div>
+                    <div class="panel-body" style="height:350px; height:380px">
+                        <el-form>
+                            <el-form-item v-for="(parkingProgress,index) in parkingProgressList" :key="index" :label="parkingProgress.communityName">
+                                <el-progress
+                                        :text-inside="true"
+                                        :stroke-width="26"
+                                        :percentage="parkingProgress.progress"
+                                        :status="parkingProgress.status"
+                                ></el-progress>
+                            </el-form-item>
+                        </el-form>
                     </div>
                 </section>
         </div>
         <div class="col-sm-4">
          <section class="panel">
-                    <div class="panel-heading">小区停车位</div>
-                    <div class="panel-body">
-                        <div class="echarts" id="years" style="height:300px; height:350px"></div>
+                    <div class="panel-heading">防疫状况</div>
+                    <div class="panel-body" style="height:350px; height:380px;text-align: center">
+                        <el-progress type="circle" :percentage="100" :status="danger==2?'exception':danger==1?'warning':'success'">
+                        </el-progress>
+                        <br/>
+                        <h1>{{danger==2?'当前有高风险！':danger==1?'当前有中风险！':'~当前无风险~'}}</h1>
+                        <h1>{{danger==2?'请迅速封控管理！':danger==1?'请迅速排查！':'&nbsp;!请格外注意防范！'}}</h1>
                     </div>
                 </section>
+
         </div>
         <div class="col-sm-4">
          <section class="panel">
-                    <div class="panel-heading">最新活动</div>
+                    <div class="panel-heading">最新投诉</div>
                     <div class="panel-body">
-                        <ul class="list-group clear-list m-t">
-                            <li class="list-group-item fist-item"> <span class="float-right"> 09:00 </span> <span class="label label-success">1</span> 小区活动1 </li>
-                            <li class="list-group-item"> <span class="float-right"> 10:16 </span> <span class="label label-info">2</span> 小区活动2 </li>
-                            <li class="list-group-item"> <span class="float-right"> 08:22 </span> <span class="label label-primary">3</span> 小区活动3 </li>
-                            <li class="list-group-item"> <span class="float-right"> 11:06 </span> <span class="label label-warning">4</span> 小区活动4 </li>
-                            <li class="list-group-item"> <span class="float-right"> 12:00 </span> <span class="label label-warning">5</span> 小区活动5 </li>
-                            <li class="list-group-item"> <span class="float-right"> 08:22 </span> <span class="label label-warning">6</span> 小区活动6 </li>
-                            <li class="list-group-item"> <span class="float-right"> 11:06 </span> <span class="label label-warning">7</span> 小区活动7 </li>
-                            <li class="list-group-item"> <span class="float-right"> 12:00 </span> <span class="label label-warning">8</span> 小区活动8 </li>
-                            <li class="list-group-item"> <span class="float-right"> 11:06 </span> <span class="label label-warning">9</span> 小区活动9 </li>
-                            <li class="list-group-item"> <span class="float-right"> 12:00 </span> <span class="label label-warning">10</span> 小区活动10 </li>
+                        <ul class="infinite-list"  infinite-scroll-disabled>
+<!--                    <ul class="list-group clear-list m-t" >-->
+                            <li v-for="(complaint,index) in complaintList" class="infinite-list-item" :key="index">
+                                <span class="float-right">{{dateFormat(complaint.createTime)}}</span>
+                                <span class="label label-success">{{index+1}}</span>
+                                {{complaint.description}}
+                            </li>
+<!--                            <li class="list-group-item fist-item"> <span class="float-right"> 09:00 </span> <span class="label label-success">1</span> 小区活动1 </li>-->
+<!--                            <li class="list-group-item"> <span class="float-right"> 10:16 </span> <span class="label label-info">2</span> 小区活动2 </li>-->
+<!--                            <li class="list-group-item"> <span class="float-right"> 08:22 </span> <span class="label label-primary">3</span> 小区活动3 </li>-->
+<!--                            <li class="list-group-item"> <span class="float-right"> 11:06 </span> <span class="label label-warning">4</span> 小区活动4 </li>-->
+<!--                            <li class="list-group-item"> <span class="float-right"> 12:00 </span> <span class="label label-warning">5</span> 小区活动5 </li>-->
+<!--                            <li class="list-group-item"> <span class="float-right"> 08:22 </span> <span class="label label-warning">6</span> 小区活动6 </li>-->
+<!--                            <li class="list-group-item"> <span class="float-right"> 11:06 </span> <span class="label label-warning">7</span> 小区活动7 </li>-->
+<!--                            <li class="list-group-item"> <span class="float-right"> 12:00 </span> <span class="label label-warning">8</span> 小区活动8 </li>-->
+<!--                            <li class="list-group-item"> <span class="float-right"> 11:06 </span> <span class="label label-warning">9</span> 小区活动9 </li>-->
+<!--                            <li class="list-group-item"> <span class="float-right"> 12:00 </span> <span class="label label-warning">10</span> 小区活动10 </li>-->
                         </ul>
                     </div>
                 </section>
         </div>
             <div class="col-sm-4">
                 <section class="panel">
-                    <div class="panel-heading">最新保修</div>
+                    <div class="panel-heading">最新报修</div>
                     <div class="panel-body">
-                        <ul class="list-group clear-list m-t">
-                            <li class="list-group-item"> <span class="float-right"> 09:00 &nbsp;<b style="color: #2fb9d4">已受理</b></span> <span class="label label-danger">1</span> D区垃圾桶更换 </li>
-                            <li class="list-group-item"> <span class="float-right"> 10:16 &nbsp;<b style="color: #2fb9d4">已受理</b></span> <span class="label label-info">2</span> C区路灯维修 </li>
-                            <li class="list-group-item"> <span class="float-right"> 08:22 &nbsp;<b style="color: #2fb9d4">已受理</b></span> <span class="label label-warning">3</span> A区13楼摄像头维修 </li>
-                            <li class="list-group-item"> <span class="float-right"> 11:06 &nbsp;<b style="color: #2fb9d4">已受理</b></span> <span class="label label-default">4</span> A区13楼摄像头维修 </li>
-                            <li class="list-group-item"> <span class="float-right"> 12:00 &nbsp;<b style="color: #FF5722">未受理</b></span> <span class="label label-default">5</span> A区13楼摄像头维修 </li>
-                            <li class="list-group-item"> <span class="float-right"> 08:22 &nbsp;<b style="color: #FF5722">未受理</b></span> <span class="label label-default">6</span> A区13楼摄像头维修 </li>
-                            <li class="list-group-item"> <span class="float-right"> 11:06 &nbsp;<b style="color: #FF5722">未受理</b></span> <span class="label label-default">7</span> A区13楼摄像头维修 </li>
-                            <li class="list-group-item"> <span class="float-right"> 12:00 &nbsp;<b style="color: #2fb9d4">已受理</b></span> <span class="label label-default">8</span> A区13楼摄像头维修 </li>
-                            <li class="list-group-item"> <span class="float-right"> 11:06 &nbsp;<b style="color: #2fb9d4">已受理</b></span> <span class="label label-default">9</span> A区13楼摄像头维修 </li>
-                            <li class="list-group-item"> <span class="float-right"> 12:00 &nbsp;<b style="color: #2fb9d4">已受理</b></span> <span class="label label-default">10</span> B区地下停车场排水系统检修 </li>
+                        <ul class="infinite-list" infinite-scroll-disabled>
+                            <li v-for="(repair,index) in repairList" class="infinite-list-item" :key="index">
+                                <span class="float-right">{{dateFormat(repair.createTime)}}
+<!--                                <b :style="color:'repair.status==0?'#FF5722':repair.status==1?'#2FB9D4':'#2FB9A5'">-->
+<!--                                    <span :class="repair.status == 0?'layui-btn layui-btn-danger':repair.status==1?'layui-btn layui-btn':'layui-btn layui-btn-disabled'">-->
+                                    <el-tag size="small" :type="repair.status==0?'danger':repair.status==1?'':'info'">
+                                    {{repair.status==0?'未受理':repair.status==1?'已受理':'已完成'}}
+                                    </el-tag>
+<!--                                </b>-->
+                                </span>
+                                <span class="label label-info">{{index+1}}</span> {{repair.description}} </li>
+                            </li>
                         </ul>
+<!--                        <ul class="list-group clear-list m-t">-->
+<!--                            <li class="list-group-item"> <span class="float-right"> 09:00 &nbsp;<b style="color: #2fb9d4">已受理</b></span> <span class="label label-danger">1</span> D区垃圾桶更换 </li>-->
+<!--                            <li class="list-group-item"> <span class="float-right"> 10:16 &nbsp;<b style="color: #2fb9d4">已受理</b></span> <span class="label label-info">2</span> C区路灯维修 </li>-->
+<!--                            <li class="list-group-item"> <span class="float-right"> 08:22 &nbsp;<b style="color: #2fb9d4">已受理</b></span> <span class="label label-warning">3</span> A区13楼摄像头维修 </li>-->
+<!--                            <li class="list-group-item"> <span class="float-right"> 11:06 &nbsp;<b style="color: #2fb9d4">已受理</b></span> <span class="label label-default">4</span> A区13楼摄像头维修 </li>-->
+<!--                            <li class="list-group-item"> <span class="float-right"> 12:00 &nbsp;<b style="color: #FF5722">未受理</b></span> <span class="label label-default">5</span> A区13楼摄像头维修 </li>-->
+<!--                            <li class="list-group-item"> <span class="float-right"> 08:22 &nbsp;<b style="color: #FF5722">未受理</b></span> <span class="label label-default">6</span> A区13楼摄像头维修 </li>-->
+<!--                            <li class="list-group-item"> <span class="float-right"> 11:06 &nbsp;<b style="color: #FF5722">未受理</b></span> <span class="label label-default">7</span> A区13楼摄像头维修 </li>-->
+<!--                            <li class="list-group-item"> <span class="float-right"> 12:00 &nbsp;<b style="color: #2fb9d4">已受理</b></span> <span class="label label-default">8</span> A区13楼摄像头维修 </li>-->
+<!--                            <li class="list-group-item"> <span class="float-right"> 11:06 &nbsp;<b style="color: #2fb9d4">已受理</b></span> <span class="label label-default">9</span> A区13楼摄像头维修 </li>-->
+<!--                            <li class="list-group-item"> <span class="float-right"> 12:00 &nbsp;<b style="color: #2fb9d4">已受理</b></span> <span class="label label-default">10</span> B区地下停车场排水系统检修 </li>-->
+<!--                        </ul>-->
                     </div>
                 </section>
             </div>
@@ -181,7 +216,7 @@
                             </tr>
                             <tr>
                                 <td>服务器端口 </td>
-                                <td>80</td>
+                                <td>8080</td>
                             </tr>
                             <tr>
                                 <td>服务器IIS版本 </td>
@@ -220,12 +255,140 @@
         </div>
 
         </div>
+        </div>
     
-        <script src="lib/layui/layui.js" charset="utf-8"></script>\
+        <script src="lib/layui/layui.js" charset="utf-8"></script>
         <script src="js/jquery.min.js"></script>
         <script src="js/echarts.min.js"></script>
+            <!--引入Vue内容-->
+            <script src="js/vue.js" charset="utf-8"></script>
+            <script src="js/index.js" charset="utf-8"></script>
+            <script src="js/axios.js" charset="utf-8"></script>
+            <script src="js/moment.min.js" charset="utf-8"></script>
+            <script type="text/javascript" src="https://cdn.bootcss.com/echarts/4.7.0/echarts.min.js"></script>
 
+            <script type="text/javascript">
+                var dom = document.getElementById("container");
+                var myChart = echarts.init(dom);
+
+                var option = {
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b}: {c} ({d}%)"
+                    },
+                    color:['#93D8A9','#FFB99D','#AF7DCC','#FFD83D','#bbe2e8'],
+                    legend: {
+                        orient: 'horizontal',
+                        x: 'left',
+                        data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+                    },
+                    series: [{
+                        name: '访问来源',
+                        type: 'pie',
+                        radius: ['30%', '70%'],
+                        avoidLabelOverlap: false,
+                        label: {
+                            normal: {
+                                show: false,
+                                position: 'center'
+                            },
+                            emphasis: {
+                                show: true,
+                                textStyle: {
+                                    fontSize: '30',
+                                    fontWeight: 'bold'
+                                }
+                            }
+                        },
+                        labelLine: {
+                            normal: {
+                                show: false
+                            }
+                        },
+                        data: [{
+                            value: 335,
+                            name: '直接访问'
+                        },
+                            {
+                                value: 310,
+                                name: '邮件营销'
+                            },
+                            {
+                                value: 234,
+                                name: '联盟广告'
+                            },
+                            {
+                                value: 135,
+                                name: '视频广告'
+                            },
+                            {
+                                value: 1548,
+                                name: '搜索引擎'
+                            }
+                        ]
+                    }]
+                };
+                if(option && typeof option === "object") {
+                    myChart.setOption(option, true);
+                }
+            </script>
         <script type="text/javascript">
+        //vue内容
+        var app=new Vue({
+            el:"#app",
+            data:{
+                danger:"",
+                totalCount:{},
+                parkingProgressList:[],
+                complaintList:[],
+                repairList:[],
+            },
+            methods:{
+                getTotals(){
+                    axios.get("backend/community/GetTotals").then((res)=>{
+                        app.totalCount=res.data;
+                    })
+                },
+                getDanger(){
+                  axios.get("backend/community/GetDanger").then((res)=>{
+                      app.danger=res.data;
+                  })
+                },
+                getParkingProgress(){
+                    axios.get("backend/community/GetParkingProgress").then((res)=>{
+                        app.parkingProgressList=res.data;
+                    })
+                },
+                getcomplains(){
+                    axios.post("backend/complaint/GetTen").then((res)=>{
+                        app.complaintList=res.data;
+                    })
+                },
+                getrepair(){
+                    axios.post("backend/repair/GetTen").then((res)=>{
+                        app.repairList=res.data;
+                    })
+                },
+                /*日期格式化方法*/
+                dateFormat(date, format) {
+                    if (format == null || format == '') {
+                        format = "YYYY-MM-DD HH:mm:ss"
+                    }
+                    return moment(date).format(format);
+                },
+            },
+            created:function (){
+                this.getTotals();
+                this.getParkingProgress();
+                this.getcomplains();
+                this.getrepair();
+                this.getDanger();
+            }
+        })
+
+
+
+
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('main'));
 
@@ -359,113 +522,156 @@
         myChart.setOption(option);
     </script>
     <script type="text/javascript">
-        // 指定图表的配置项和数据
-       var myChart = echarts.init(document.getElementById('area'));
+        var cname;
+        var cvalue;
 
-        // 指定图表的配置项和数据
-    var option = {
-        title: {
-            text: '小区人数统计',
-            subtext: '（人）',
-            x: 'center'
-        },
-        tooltip: {
-            trigger: 'item',
-            formatter: "{a} <br/>{b} : {c} ({d}%)"
-        },
-        itemStyle: {
+        const p1 = axios.get("/backend/community/communityNames");
+        const p2 = axios.get("/backend/community/communityValues");
+        Promise.all([p1,p2]).then((res)=> {
+                cname=res[0].data;
+                cvalue=res[1].data;
 
-            normal: {
 
-                //好，这里就是重头戏了，定义一个list，然后根据所以取得不同的值，这样就实现了，
+            var myChart = echarts.init(document.getElementById('area'));
 
-                color: function(params) {
-
-                    // build a color map as your need.
-
-                    var colorList = [
-
-                        '#27C24C','#F05050','#23b7e5','#7266ba','#18bc9c',
-
-                        '#FE8463','#9BCA63','#FAD860','#F3A43B','#60C0DD',
-
-                        '#D7504B','#C6E579','#F4E001','#F0805A','#26C0C0'
-
-                    ];
-
-                    return colorList[params.dataIndex]
-
+            // 指定图表的配置项和数据
+            var option = {
+                title: {
+                    text: '小区人数统计',
+                    subtext: '（人）',
+                    x: 'center'
                 },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                itemStyle: {
 
-                //以下为是否显示，显示位置和显示格式的设置了
+                    normal: {
 
-                label: {
+                        //好，这里就是重头戏了，定义一个list，然后根据所以取得不同的值，这样就实现了，
 
-                    show: true,
+                        color: function(params) {
 
-                    position: 'top',
+                            // build a color map as your need.
+
+                            var colorList = [
+
+                                '#27C24C','#F05050','#23b7e5','#7266ba','#18bc9c',
+
+                                '#FE8463','#9BCA63','#FAD860','#F3A43B','#60C0DD',
+
+                                '#D7504B','#C6E579','#F4E001','#F0805A','#26C0C0'
+
+                            ];
+
+                            return colorList[params.dataIndex]
+
+                        },
+
+                        //以下为是否显示，显示位置和显示格式的设置了
+
+                        label: {
+
+                            show: true,
+
+                            position: 'top',
 
 //                             formatter: '{c}'
 
-                    formatter: '{b}\n{c}'
+                            formatter: '{b}\n{c}'
 
-                }
+                        }
 
-            }
+                    }
 
-        },
-        legend: {
-            orient: 'vertical',
-            left: 'left',
-            data: ['A区', 'B区', 'C区', 'D区', 'E区']
-        },
-        series: [{
-            name: '小区租户人数',
-            type: 'pie',
-            radius: '55%',
-            center: ['50%', '60%'],
-            data: [
-                { value: 6335, name: 'A区' },
-                { value: 4310, name: 'B区' },
-                { value: 2310, name: 'C区' },
-                { value: 3310, name: 'D区' },
-                { value: 9310, name: 'E区' }
-            ],
-            itemStyle: {
-                emphasis: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-            }
-        }]
-    };
-        // 使用刚指定的配置项和数据显示图表。
-        myChart.setOption(option);
-        myChart.currentIndex = -1;
-        setInterval(function () {
-            var dataLen = option.series[0].data.length;
-            /*console.log(dataLen);*/
-            // 取消之前高亮的图形
-            myChart.dispatchAction({
-                type: 'downplay',
-                seriesIndex: 0,
-                dataIndex: myChart.currentIndex
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                    // data: ['A区', 'B区', 'C区', 'D区', 'E区']
+                    data:cname,
+                },
+                series: [{
+                    name: '小区租户人数',
+                    type: 'pie',
+                    radius: '55%',
+                    center: ['50%', '60%'],
+                    data:cvalue,
+                    // data: [
+                    //     // { value: 6335, name: 'A区' },
+                    //     // { value: 4310, name: 'B区' },
+                    //     // { value: 2310, name: 'C区' },
+                    //     // { value: 3310, name: 'D区' },
+                    //     // { value: 9310, name: 'E区' }
+                    // ],
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }]
+            };
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+            myChart.currentIndex = -1;
+            setInterval(function () {
+                var dataLen = option.series[0].data.length;
+                /*console.log(dataLen);*/
+                // 取消之前高亮的图形
+                myChart.dispatchAction({
+                    type: 'downplay',
+                    seriesIndex: 0,
+                    dataIndex: myChart.currentIndex
+                });
+                myChart.currentIndex = (myChart.currentIndex + 1) % dataLen;
+                // 高亮当前图形
+                myChart.dispatchAction({
+                    type: 'highlight',
+                    seriesIndex: 0,
+                    dataIndex: myChart.currentIndex
+                });
+            }, 1000);
+
+            // 使用刚指定的配置项和数据显示图表。
+            /*myChart.setOption(option);*/
+            window.addEventListener("resize",function(){
+                myChart.resize();
             });
-            myChart.currentIndex = (myChart.currentIndex + 1) % dataLen;
-            // 高亮当前图形
-            myChart.dispatchAction({
-                type: 'highlight',
-                seriesIndex: 0,
-                dataIndex: myChart.currentIndex
-            });
-        }, 1000);
+        })
+        // axios.get("/backend/community/communityNames").then((res)=>{
+        //     cname=res.data;
+        //     //cname=res.data;
+        //     console.log(res.data);
+        //     console.log(this.cname);
+        //     console.log("3"+res);
+        //     console.log(cname);
+        // });
+        // axios.get("/backend/community/communityValues").then((res)=>{
+        //     cvalue=res.data;
+        //     //cvalue=res.data;
+        // });
+        //debugger
+        //cname=cname.toArray();
+        //cvalue=cvalue.toArray();
+        console.log(cname);
+        // axios({
+        //     method:"get",
+        //     url:"/backend/community/communityNames",
+        //     transformResponse:[function (data) {cname=data;}],
+        // });
+        //console.log(this.cname);
+        // axios({
+        //     method:"get",
+        //     url:"/backend/community/communityValues",
+        //     transformResponse:[function (data) {cvalue=data;}],
+        // })
+        //cname=["化纤小区","天星社区"];
+        //cvalue=[{name:"化纤小区",value:1},{name:"天星社区",value:2}]
+        // 指定图表的配置项和数据
 
-        // 使用刚指定的配置项和数据显示图表。
-        /*myChart.setOption(option);*/
-        window.addEventListener("resize",function(){
-            myChart.resize();
-        });
     </script>
     <script type="text/javascript">
         // 基于准备好的dom，初始化echarts实例
@@ -604,7 +810,7 @@
     </script>
 
             
-        </div>
+
         <div class="layui-footer footer footer-demo">
             <div class="layui-main">
                 <p>

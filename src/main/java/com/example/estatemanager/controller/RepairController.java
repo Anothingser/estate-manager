@@ -60,4 +60,9 @@ public class RepairController {
         else
             return new Result(false,StatusCode.ERROR,MessageConstant.SYSTEM_BUSY);
     }
+
+    @RequestMapping("/GetTen")
+    public List<Repair> GetTen(){
+        return repairService.GetTen();
+    }
 }

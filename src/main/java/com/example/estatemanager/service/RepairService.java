@@ -16,4 +16,6 @@ public interface RepairService {
     boolean DeleteRepair(List<Integer> ids);
 
     boolean NextStep(Integer id, Integer status);
+
+    List<Repair> GetTen();
 }

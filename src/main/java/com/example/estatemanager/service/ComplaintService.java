@@ -16,4 +16,8 @@ public interface ComplaintService {
     boolean DeleteComplaint(List<Integer> ids);
 
     boolean NextStep(Integer id, Integer status);
+
+    Integer complaintCount();
+
+    List<Complaint> GetTen();
 }

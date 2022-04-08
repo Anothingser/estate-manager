@@ -7,7 +7,10 @@ import com.example.estatemanager.common.PageResult;
 import com.example.estatemanager.common.Result;
 import com.example.estatemanager.common.StatusCode;
 import com.example.estatemanager.domain.Community;
+import com.example.estatemanager.domain.ParkingProgress;
+import com.example.estatemanager.domain.TotalCount;
 import com.example.estatemanager.service.CommunityService;
+import com.example.estatemanager.service.impl.CommunityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.github.pagehelper.Page;
@@ -82,5 +85,38 @@ public class CommunityController {
         ArrayList communities=communityService.GetCommunities();
         ArrayList list=new ArrayList();
         return new Result();
+    }
+
+    @RequestMapping("GetTotals")
+    public TotalCount GetTotals(){
+        return communityService.GetTotals();
+    }
+
+    /**
+     * 前端主页面，停车位使用进度条对应方法
+     * @return List<ParkingProgress>
+     */
+    @RequestMapping("GetParkingProgress")
+    public List<ParkingProgress> GetParkingProgress(){
+        return communityService.GetParkingProgress();
+    }
+
+    /**
+     * 小区饼状图的两个方法
+     * @return 妈的隔壁的
+     */
+    @RequestMapping("communityNames")
+    public List<String> communityNames(){
+        return communityService.communityNames();
+    }
+
+    @RequestMapping("communityValues")
+    public List<CommunityServiceImpl.Value> communityValues(){
+        return communityService.communityValues();
+    }
+
+    @RequestMapping("GetDanger")
+    public Integer GetDanger(){
+        return communityService.GetDanger();
     }
 }

@@ -1,12 +1,14 @@
 package com.example.estatemanager.service.impl;
 
-import com.example.estatemanager.dao.CommunityMapper;
-import com.example.estatemanager.domain.Community;
+import com.example.estatemanager.dao.*;
+import com.example.estatemanager.domain.*;
 import com.example.estatemanager.service.CommunityService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.util.StringUtil;
 
@@ -20,6 +22,14 @@ public class CommunityServiceImpl implements CommunityService {
 
     @Autowired
     private CommunityMapper communityMapper;
+    @Autowired
+    private BuildingMapper buildingMapper;
+    @Autowired
+    private OwnerMapper ownerMapper;
+    @Autowired
+    private HouseMapper houseMapper;
+    @Autowired
+    private ParkingMapper parkingMapper;
 
     @Override
     public List<Community> communityTable() {
@@ -121,5 +131,122 @@ public class CommunityServiceImpl implements CommunityService {
             i++;
         }
         return communities;
+    }
+
+    /**
+     * 获取总计数
+     * @return TotalCount
+     */
+    @Override
+    public TotalCount GetTotals() {
+        TotalCount totalCount=new TotalCount();
+        totalCount.setTotalCommunities(communityMapper.selectCount(new Community()));
+        totalCount.setTotalBuildings(buildingMapper.selectCount(new Building()));
+        totalCount.setTotalHouses(houseMapper.selectCount(new House()));
+        Owner owner=new Owner();
+        totalCount.setTotalPeople(ownerMapper.selectCount(owner));
+        owner.setType(2);
+        totalCount.setTotalTenant(ownerMapper.selectCount(owner));
+        return totalCount;
+    }
+
+    /**
+     * 主页面停车位对应方法
+     * @return
+     */
+    @Override
+    @Transactional
+    public List<ParkingProgress> GetParkingProgress() {
+        List<ParkingProgress> list=new ArrayList<>();;
+        List<Integer> idlist = new ArrayList<>();
+        List<Community> clist=communityMapper.selectAll();
+        Parking parking=new Parking();
+        for(Community community : clist){
+            Integer i=community.getId();
+            idlist.add(i);
+        }
+        for(Integer id : idlist){
+            ParkingProgress parkingProgress=new ParkingProgress();
+            parking.setCommunityId(id);
+            //获得分母，对应社区id
+            Integer total=parkingMapper.selectCount(parking);
+            parking.setStatus(1);
+            //获得分子
+            Integer use=parkingMapper.selectCount(parking);
+            //设置进度
+            if(total==0) parkingProgress.setProgress(0);else parkingProgress.setProgress(use*100/total);
+            //设置社区名字
+            parkingProgress.setCommunityName(communityMapper.selectByPrimaryKey(id).getName());
+            //设置status
+            if(parkingProgress.getProgress()<40)
+                parkingProgress.setStatus("success");
+            else if(parkingProgress.getProgress()<60)
+                parkingProgress.setStatus("");
+            else if(parkingProgress.getProgress()<60)
+                parkingProgress.setStatus("warning");
+            else
+                parkingProgress.setStatus("exception");
+            //添加到返回列表
+            list.add(parkingProgress);
+        }
+        return list;
+    }
+
+    @Override
+    public List<String> communityNames() {
+        List<String> list=new ArrayList<>();
+        List<Community> clist=communityMapper.selectAll();
+        for(Community community : clist){
+            list.add(community.getName());
+        }
+        return list;
+    }
+
+    @Override
+    public List<Value> communityValues() {
+        List<Value> list=new ArrayList<>();
+        List<Community> clist=communityMapper.selectAll();
+        Owner owner=new Owner();
+        for(Community community : clist){
+            Value value=new Value();
+            value.setName(community.getName());//设定小区名称
+            owner.setCommunityName(community.getName());
+            Integer people=ownerMapper.selectCount(owner);
+            value.setValue(people);
+            list.add(value);
+            owner.setCommunityName("");
+        }
+        return list;
+    }
+
+    /**
+     * 防疫状况
+     * @return 防疫状态
+     */
+    @Override
+    public Integer GetDanger() {
+        Building building=new Building();
+        building.setDanger(2);
+        if(buildingMapper.selectCount(building)>0)
+            return 2;
+        else{
+            building.setDanger(1);
+            if(buildingMapper.selectCount(building)>0)
+                return 1;
+            else
+                return 0;
+        }
+    }
+
+
+    /**
+     * 人数饼图的实体类
+     */
+    @Data
+    public class Value
+    {
+        private String name;
+
+        private Integer value;
     }
 }

@@ -1,6 +1,9 @@
 package com.example.estatemanager.service;
 
 import com.example.estatemanager.domain.Community;
+import com.example.estatemanager.domain.ParkingProgress;
+import com.example.estatemanager.domain.TotalCount;
+import com.example.estatemanager.service.impl.CommunityServiceImpl;
 import com.github.pagehelper.Page;
 
 import java.util.ArrayList;
@@ -24,4 +27,14 @@ public interface CommunityService {
     Boolean DeleteCommunity(List<Integer> ids);
 
     ArrayList GetCommunities();
+
+    TotalCount GetTotals();
+
+    List<ParkingProgress> GetParkingProgress();
+
+    List<String> communityNames();
+
+    List<CommunityServiceImpl.Value> communityValues();
+
+    Integer GetDanger();
 }
