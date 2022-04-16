@@ -119,4 +119,9 @@ public class CommunityController {
     public Integer GetDanger(){
         return communityService.GetDanger();
     }
+
+    @RequestMapping("test01")
+    public Integer test01(String usernam, String password){
+        return 1;
+    }
 }

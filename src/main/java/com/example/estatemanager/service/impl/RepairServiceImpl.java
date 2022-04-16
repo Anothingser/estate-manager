@@ -1,6 +1,11 @@
 package com.example.estatemanager.service.impl;
 
+import com.example.estatemanager.dao.BuildingMapper;
+import com.example.estatemanager.dao.DeviceMapper;
+import com.example.estatemanager.dao.OwnerMapper;
 import com.example.estatemanager.dao.RepairMapper;
+import com.example.estatemanager.domain.Building;
+import com.example.estatemanager.domain.Owner;
 import com.example.estatemanager.domain.Repair;
 import com.example.estatemanager.service.RepairService;
 import com.github.pagehelper.Page;
@@ -18,6 +23,12 @@ import java.util.Map;
 public class RepairServiceImpl implements RepairService {
     @Autowired
     private RepairMapper repairMapper;
+    @Autowired
+    private BuildingMapper buildingMapper;
+    @Autowired
+    private DeviceMapper deviceMapper;
+    @Autowired
+    private OwnerMapper ownerMapper;
 
     @Override
     public Page<Repair> SearchList(Map searchMap) {
@@ -56,6 +67,18 @@ public class RepairServiceImpl implements RepairService {
 
     @Override
     public boolean AddRepair(Repair repair) {
+        if(repair.getBuildingId()!=null){
+            repair.setBuildingName(buildingMapper.selectByPrimaryKey(repair.getBuildingId()).getName());
+        }
+        if(repair.getDeviceId()!=null){
+            repair.setDeviceName(deviceMapper.selectByPrimaryKey(repair.getDeviceId()).getName());
+        }
+        repair.setStatus(0);
+
+        Owner owner=ownerMapper.selectByPrimaryKey(repair.getOwnerId());
+        repair.setOwnerName(owner.getName());
+        repair.setCommunityId(owner.getCommunityId());
+        repair.setCommunityName(owner.getCommunityName());
         if(repairMapper.insert(repair)==1)
             return true;
         else

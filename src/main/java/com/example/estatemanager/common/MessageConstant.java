@@ -58,20 +58,25 @@ public class MessageConstant {
     public static final String REPAIR_UPDATE_SUCCESS="报修信息更新成功";
     public static final String REPAIR_DELETE_SUCCESS="报修信息删除成功";
     //---------------------------投诉（Complaint）操作消息提示信息---------------------------------------
-    public static final String COMPLAINT_SEARCH_SUCCESS="报修信息查找成功";
-    public static final String COMPLAINT_ADD_SUCCESS="报修信息添加成功";
-    public static final String COMPLAINT_UPDATE_SUCCESS="报修信息更新成功";
-    public static final String COMPLAINT_DELETE_SUCCESS="报修信息删除成功";
+    public static final String COMPLAINT_SEARCH_SUCCESS="投诉信息查找成功";
+    public static final String COMPLAINT_ADD_SUCCESS="投诉信息添加成功";
+    public static final String COMPLAINT_UPDATE_SUCCESS="投诉信息更新成功";
+    public static final String COMPLAINT_DELETE_SUCCESS="投诉信息删除成功";
     //---------------------------收费项目（ChargeItem）操作消息提示信息-----------------------------------
     public static final String CHARGEITEM_SEARCH_SUCCESS="收费项目信息查找成功";
     public static final String CHARGEITEM_ADD_SUCCESS="收费项目信息添加成功";
     public static final String CHARGEITEM_UPDATE_SUCCESS="收费项目信息更新成功";
     public static final String CHARGEITEM_DELETE_SUCCESS="收费项目信息删除成功";
     //---------------------------收费明细（ChargeDetail）操作消息提示信息---------------------------------
-    public static final String CHARGEDETAIL_SEARCH_SUCCESS="收费项目信息查找成功";
-    public static final String CHARGEDETAIL_ADD_SUCCESS="收费项目信息添加成功";
-    public static final String CHARGEDETAIL_UPDATE_SUCCESS="收费项目信息更新成功";
-    public static final String CHARGEDETAIL_DELETE_SUCCESS="收费项目信息删除成功";
+    public static final String CHARGEDETAIL_SEARCH_SUCCESS="收费项目明细查找成功";
+    public static final String CHARGEDETAIL_ADD_SUCCESS="收费项目明细添加成功";
+    public static final String CHARGEDETAIL_UPDATE_SUCCESS="收费项目明细更新成功";
+    public static final String CHARGEDETAIL_DELETE_SUCCESS="收费项目明细删除成功";
+    //---------------------------账号（Account）相关操作提示信息-----------------------------------------
+    public static final String ACCOUNT_LOGIN_SUCCESS="登录成功！";
+    public static final String ACCOUNT_LOGIN_FAILED="登录失败！请检查账户和密码是否正确！";
+    public static final String ACCOUNT_REGIST_SUCCESS="注册成功！";
+    public static final String ACCOUNT_REGIST_FAILED="注册失败！用户类型出错/手机号已被注册/没有该手机号码的资料！";
     //---------------------------系统提示信息----------------------------------------------------------
     public static final String SYSTEM_BUSY = "系统繁忙，请求稍后重试！";
     //---------------------------文件上传提示信息-------------------------------------------------------

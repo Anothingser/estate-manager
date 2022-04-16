@@ -30,12 +30,12 @@
                 <el-input v-model="building.name"/>
             </el-form-item>
             <el-form-item label="所属小区" prop="name">
-                <el-select v-model="community" placeholder="请选择" @change="setcid">
+                <el-select v-model="community.id" placeholder="请选择" @change="setcid">
                     <el-option id="selects"
                             v-for="item in communities"
                             :key="item.id"
                             :label="item.name"
-                            :value="item">
+                            :value="item.id">
                     </el-option>
                 </el-select>
             </el-form-item>
@@ -96,9 +96,10 @@
                 this.$refs.buildingFormRef.resetFields();
             },
             setcid(){
-                app.building.communityId=this.community.id;
-                app.building.communityName=this.community.name;
-                console.log(app.building.communityId);
+                axios.get("backend/community/FindById?id="+this.community.id).then((res)=>{
+                    app.building.communityId=res.data.data.id;
+                    app.building.communityName=res.data.data.name;
+                })
             },
             save(){
                 var method="";

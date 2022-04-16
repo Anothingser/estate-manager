@@ -1,7 +1,9 @@
 package com.example.estatemanager.service.impl;
 
 import com.example.estatemanager.dao.ComplaintMapper;
+import com.example.estatemanager.dao.OwnerMapper;
 import com.example.estatemanager.domain.Complaint;
+import com.example.estatemanager.domain.Owner;
 import com.example.estatemanager.service.ComplaintService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -17,6 +19,8 @@ import java.util.Map;
 public class ComplaintServiceImpl implements ComplaintService {
     @Autowired
     private ComplaintMapper complaintMapper;
+    @Autowired
+    private OwnerMapper ownerMapper;
 
     @Override
     public Page<Complaint> SearchList(Map searchMap) {
@@ -56,6 +60,10 @@ public class ComplaintServiceImpl implements ComplaintService {
     @Override
     public boolean AddComplaint(Complaint complaint) {
         complaint.setStatus(0);
+        Owner owner=ownerMapper.selectByPrimaryKey(complaint.getOwnerId());
+        complaint.setCommunityId(owner.getCommunityId());
+        complaint.setCommunityName(owner.getCommunityName());
+        complaint.setOwnerName(owner.getName());
         if(complaintMapper.insert(complaint)==1)
             return true;
         else
