@@ -92,4 +92,12 @@ public class DeviceServiceImpl implements DeviceService {
     public Device FindById(Integer id) {
         return deviceMapper.selectByPrimaryKey(id);
     }
+
+    @Override
+    public boolean BacktoNormal(Integer id) {
+        Device device = new Device();
+        device.setId(id);
+        device.setStatus(0);
+        return deviceMapper.updateByPrimaryKeySelective(device)==1?true:false;
+    }
 }

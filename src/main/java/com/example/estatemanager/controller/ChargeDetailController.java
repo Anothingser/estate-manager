@@ -9,6 +9,7 @@ import com.example.estatemanager.domain.ChargeItem;
 import com.example.estatemanager.service.ChargeDetailService;
 import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,6 +57,33 @@ public class ChargeDetailController {
     @RequestMapping("FindById")
     public Result FindById(Integer id){
         return new Result(true,StatusCode.OK,MessageConstant.OPERATE_SUCCESS,chargeDetailService.FindById(id));
+    }
+
+    //支付后完成订单
+    @RequestMapping("EndOrder")
+    public Result EndOrder(Integer id){
+        if(chargeDetailService.EndOrder(id))
+            return new Result(true,StatusCode.OK,MessageConstant.OPERATE_SUCCESS);
+        else
+            return new Result(false,StatusCode.ERROR,MessageConstant.SYSTEM_BUSY);
+    }
+
+
+    //分发缴费单
+    @RequestMapping("SendCharges")
+    public Result SendCharges(Integer id,Integer sendingFlag){
+        if(chargeDetailService.SendCharges(id,sendingFlag))
+            return new Result(true,StatusCode.OK,MessageConstant.OPERATE_SUCCESS);
+        else
+            return new Result(false,StatusCode.ERROR,MessageConstant.SYSTEM_BUSY);
+    }
+
+    @RequestMapping("SendSomeCharges/{id}/{ids}")
+    public Result SendSomeCharge(@PathVariable("id") Integer id, @PathVariable("ids") List<Integer> ids){
+        if(chargeDetailService.SendSomeCharge(id,ids))
+            return new Result(true,StatusCode.OK,MessageConstant.OPERATE_SUCCESS);
+        else
+            return new Result(false,StatusCode.ERROR,MessageConstant.SYSTEM_BUSY);
     }
 
 

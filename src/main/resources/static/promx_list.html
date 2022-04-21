@@ -113,7 +113,7 @@
                     {{chargeDetail.status==0?'未完成':chargeDetail.status==1?'已结清':'过期'}}
                 </span>
             </td>
-            <td >{{dateFormat(chargeDetail.payTime,'YYYY-MM-DD')}}</td>
+            <td >{{chargeDetail.payTime==null?'未付款':dateFormat(chargeDetail.payTime,'YYYY-MM-DD')}}</td>
             <td >{{dateFormat(chargeDetail.createTime)}}</td>
             <td class="td-manage">
                 <a title="编辑" href="javascript:;" @click="promx_edit('编辑','promx_add.html',chargeDetail.id,'1000','600')"

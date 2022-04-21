@@ -16,4 +16,10 @@ public interface ChargeDetailService {
     boolean DeleteChargeDetail(List<Integer> ids);
 
     ChargeDetail FindById(Integer id);
+
+    boolean EndOrder(Integer id);
+
+    boolean SendCharges(Integer id,Integer sendingFlag);
+
+    boolean SendSomeCharge(Integer id, List<Integer> ids);
 }

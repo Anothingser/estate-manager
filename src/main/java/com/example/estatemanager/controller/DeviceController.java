@@ -63,4 +63,12 @@ public class DeviceController {
                 MessageConstant.OPERATE_SUCCESS,deviceService.FindById(id));
     }
 
+    @RequestMapping("/BacktoNormal")
+    public Result BacktoNormal(Integer id){
+        if(deviceService.BacktoNormal(id))
+            return new Result(true,StatusCode.OK,MessageConstant.OPERATE_SUCCESS);
+        else
+            return new Result(false,StatusCode.ERROR,MessageConstant.SYSTEM_BUSY);
+    }
+
 }

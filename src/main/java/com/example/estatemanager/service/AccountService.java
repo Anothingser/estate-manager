@@ -33,4 +33,6 @@ public interface AccountService {
     List<Repair> getrepairs(Integer ownerId);
 
     List<Building> getbuildings(Integer ownerId);
+
+    boolean changeCarType(Car car);
 }

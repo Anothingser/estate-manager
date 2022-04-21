@@ -220,5 +220,10 @@ public class AccountServiceImpl implements AccountService {
         return buildingMapper.select(building);
     }
 
+    @Override
+    public boolean changeCarType(Car car) {
+        return carMapper.updateByPrimaryKeySelective(car)==1?true:false;
+    }
+
 
 }

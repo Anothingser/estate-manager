@@ -58,4 +58,9 @@ public class OwnerController {
             return new Result(false,StatusCode.ERROR,MessageConstant.SYSTEM_BUSY);
         }
     }
+
+    @RequestMapping("GetOwners")
+    public List<Owner> GetOwners(){
+        return ownerService.GetOwners();
+    }
 }

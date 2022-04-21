@@ -137,4 +137,15 @@ public class AccountController {
         return accountService.getbuildings(ownerId);
     }
 
+    /**
+     * 改变停车类型
+     */
+    @RequestMapping("changeCarType")
+    public Result changeCarType(@RequestBody Car car){
+        if(accountService.changeCarType(car))
+            return new Result(true,StatusCode.OK,MessageConstant.OPERATE_SUCCESS);
+        else
+            return new Result(false,StatusCode.ERROR,MessageConstant.SYSTEM_BUSY);
+    }
+
 }

@@ -17,4 +17,6 @@ public interface DeviceService {
     boolean DeleteDevice(List<Integer> ids);
 
     Device FindById(Integer id);
+
+    boolean BacktoNormal(Integer id);
 }

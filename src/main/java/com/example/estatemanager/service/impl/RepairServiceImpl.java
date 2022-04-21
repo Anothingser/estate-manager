@@ -5,6 +5,7 @@ import com.example.estatemanager.dao.DeviceMapper;
 import com.example.estatemanager.dao.OwnerMapper;
 import com.example.estatemanager.dao.RepairMapper;
 import com.example.estatemanager.domain.Building;
+import com.example.estatemanager.domain.Device;
 import com.example.estatemanager.domain.Owner;
 import com.example.estatemanager.domain.Repair;
 import com.example.estatemanager.service.RepairService;
@@ -79,6 +80,12 @@ public class RepairServiceImpl implements RepairService {
         repair.setOwnerName(owner.getName());
         repair.setCommunityId(owner.getCommunityId());
         repair.setCommunityName(owner.getCommunityName());
+        Device device = new Device();
+        if(repair.getDeviceId() != null){
+            device.setId(repair.getDeviceId());
+            device.setStatus(1);
+            deviceMapper.updateByPrimaryKeySelective(device);
+        }
         if(repairMapper.insert(repair)==1)
             return true;
         else

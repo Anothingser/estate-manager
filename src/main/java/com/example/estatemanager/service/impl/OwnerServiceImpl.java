@@ -86,4 +86,9 @@ public class OwnerServiceImpl implements OwnerService {
         else
             return false;
     }
+
+    @Override
+    public List<Owner> GetOwners() {
+        return ownerMapper.selectAll();
+    }
 }

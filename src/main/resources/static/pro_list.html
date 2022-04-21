@@ -13,7 +13,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" href="css/main.css" media="all">
-    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href ="css/bootstrap.css">
     <script type="text/javascript" src="lib/loading/okLoading.js"></script>
     <link rel="stylesheet" href="css/index.css">
 </head>
@@ -100,7 +100,7 @@
             <td>{{chargeItem.money}}</td>
             <td>{{dateFormat(chargeItem.createTime)}}</td>
             <td class="td-manage">
-                <a title="生成缴费单" href="javascript:;" @click="pro_edit('编辑','pro_add.html',chargeItem.id,'1000','600')"
+                <a title="生成缴费单" href="javascript:;" @click="dialogFormVisible = true;nowid = chargeItem.id"
                    class="ml-5" style="text-decoration:none">
                     <i class="layui-icon">&#xe65e;</i>
                 </a>
@@ -127,6 +127,27 @@
             style="text-align:center;"
             :total="total">
     </el-pagination>
+
+    <el-dialog title="选择发送对象" :visible.sync="dialogFormVisible">
+        <el-form>
+            <el-form-item label="选择发送" >
+                <el-radio-group v-model="sendingFlag">
+                    <el-radio label="1">全体人员</el-radio>
+                    <el-radio label="2">全体房主</el-radio>
+                </el-radio-group>
+            </el-form-item>
+            <el-form-item label="或选择" >
+                <el-select  placeholder="或选择发送人员" multiple v-model="sendingOwners">
+                    <el-option :label="item.name" :value="item.id" v-for="item in owners" :key="item.id"></el-option>
+                </el-select>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="submit()">确 定</el-button>
+        </div>
+    </el-dialog>
+
 </div>
 <script src="lib/layui/layui.js" charset="utf-8"></script>
 <script src="js/x-layui.js" charset="utf-8"></script>
@@ -150,7 +171,12 @@
                 "pageNum":1,
                 "pageSize":5
             },
-            selectDate:['','']
+            selectDate:['',''],
+            owners:[],
+            dialogFormVisible:false,
+            sendingFlag:0,
+            sendingOwners:[],
+            nowid:0,
         },
         methods:{
             /*单个删除*/
@@ -257,6 +283,38 @@
                 url = url+"?id="+id;
                 x_admin_show(title,url,w,h);
             },
+            /*获取所有用户*/
+            getowners(){
+                axios.get("backend/owner/GetOwners").then((res)=>{
+                    this.owners=res.data;
+                })
+            },
+            submit(){
+                if(this.sendingFlag==0){
+                    axios.put("backend/chargedetail/SendSomeCharges/"+this.nowid+"/"+this.sendingOwners).then((res)=>{
+                        if (res.data.flag==true) {
+                            this.$message({
+                                message: res.data.message,
+                                type: "success",
+                            });
+                        } else {
+                            this.$message.error(res.data.message);
+                        }
+                    })
+                }else if(this.sendingFlag==1 || this.sendingFlag==2){
+                    axios.put("backend/chargedetail/SendCharges?id="+this.nowid+"&sendingFlag="+this.sendingFlag).then((res)=>{
+                        if (res.data.flag==true) {
+                            this.$message({
+                                message: res.data.message,
+                                type: "success",
+                            });
+                        } else {
+                            this.$message.error(res.data.message);
+                        }
+                    })
+                }
+
+            }
         },
         created:function (){
             layui.use(['laydate','element','laypage','layer'], function(){
@@ -269,6 +327,7 @@
                 //以上模块根据需要引入
             this.search();
             this.getcommunities();
+            this.getowners();
         }
     })
 </script>

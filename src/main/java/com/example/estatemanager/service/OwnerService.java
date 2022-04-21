@@ -16,4 +16,6 @@ public interface OwnerService {
     boolean AddOwner(Owner owner);
 
     boolean UpdateOwner(Owner owner);
+
+    List<Owner> GetOwners();
 }
